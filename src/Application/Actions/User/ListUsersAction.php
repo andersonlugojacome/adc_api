@@ -10,6 +10,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Get(
  *     path="/users",
+ *    tags={"users"},
  *     summary="List all users",
  *     @OA\Response(
  *         response=200,

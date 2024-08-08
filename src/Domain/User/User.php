@@ -115,7 +115,7 @@ class User implements JsonSerializable
         return $this->password;
     }
 
-    public function isActive(): int
+    public function getIsActive(): int
     {
         return $this->is_active;
     }
@@ -144,26 +144,6 @@ class User implements JsonSerializable
     {
         return $this->last_login;
     }
-
-    // #[\ReturnTypeWillChange]
-    // public function jsonSerialize(): array
-    // {
-    //     return [
-    //         'id' => $this->id,
-    //         'name' => $this->name,
-    //         'lastname' => $this->lastname,
-    //         'cc' => $this->cc,
-    //         'gender' => $this->gender,
-    //         'username' => $this->username,
-    //         'email' => $this->email,
-    //         'is_active' => $this->is_active,
-    //         'user_level' => $this->user_level,
-    //         'usersprivileges_id' => $this->usersprivileges_id,
-    //         'is_admin' => $this->is_admin,
-    //         'created_at' => $this->created_at,
-    //         'last_login' => $this->last_login
-    //     ];
-    // }
     public function jsonSerialize(): array
     {
         return [
@@ -184,63 +164,3 @@ class User implements JsonSerializable
         ];
     }
 }
-
-
-
-// <!--php
-
-// declare(strict_types=1);
-
-// namespace App\Domain\User;
-
-// use JsonSerializable;
-
-// class User implements JsonSerializable
-// {
-//     private ?int $id;
-
-//     private string $username;
-
-//     private string $firstName;
-
-//     private string $lastName;
-
-//     public function __construct(?int $id, string $username, string $firstName, string $lastName)
-//     {
-//         $this->id = $id;
-//         $this->username = strtolower($username);
-//         $this->firstName = ucfirst($firstName);
-//         $this->lastName = ucfirst($lastName);
-//     }
-
-//     public function getId(): ?int
-//     {
-//         return $this->id;
-//     }
-
-//     public function getUsername(): string
-//     {
-//         return $this->username;
-//     }
-
-//     public function getFirstName(): string
-//     {
-//         return $this->firstName;
-//     }
-
-//     public function getLastName(): string
-//     {
-//         return $this->lastName;
-//     }
-
-//     #[\ReturnTypeWillChange]
-//     public function jsonSerialize(): array
-//     {
-//         return [
-//             'id' => $this->id,
-//             'username' => $this->username,
-//             'firstName' => $this->firstName,
-//             'lastName' => $this->lastName,
-//         ];
-//     }
-// } -->

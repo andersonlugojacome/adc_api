@@ -14,6 +14,13 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
+use App\Application\Actions\UserGroup\ListUserGroupsAction;
+use App\Application\Actions\UserGroup\ViewUserGroupAction;
+use App\Application\Actions\UserGroup\CreateUserGroupAction;
+use App\Application\Actions\UserGroup\UpdateUserGroupAction;
+use App\Application\Actions\UserGroup\DeleteUserGroupAction;
+
+
 
 return function (App $app) {
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
@@ -45,6 +52,14 @@ return function (App $app) {
         $group->get('/{id}', ViewUserAction::class);
         $group->post('', CreateUserAction::class);
         $group->put('/{id}', UpdateUserAction::class);
+    })->add(JwtMiddleware::class);
+    // add /user-groups
+    $app->group('/user-groups', function (Group $group) {
+        $group->get('', ListUserGroupsAction::class);
+        $group->get('/{id}', ViewUserGroupAction::class);
+        $group->post('', CreateUserGroupAction::class);
+        $group->put('/{id}', UpdateUserGroupAction::class);
+        $group->delete('/{id}', DeleteUserGroupAction::class);
     })->add(JwtMiddleware::class);
 
     

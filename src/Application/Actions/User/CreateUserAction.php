@@ -9,6 +9,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Post(
  *   path="/users",
+ *   tags={"users"},
  *  summary="Create a new user",
  * description="Create a new user",
  * @OA\RequestBody(

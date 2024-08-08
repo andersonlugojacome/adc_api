@@ -55,7 +55,7 @@ class UserRepository
             $stmt->bindValue('username', $data['username']);
             $stmt->bindValue('email', $data['email']);
             //Pass es MD5 porque asi lo pide el enunciado
-            $stmt->bindValue('password', md5($data['password']));
+            $stmt->bindValue('password', sha1(md5($data['password'])));
             $stmt->bindValue('is_active', $data['is_active']);
             $stmt->bindValue('user_level', $data['user_level']);
             $stmt->bindValue('usersprivileges_id', $data['usersprivileges_id']);
@@ -83,7 +83,10 @@ class UserRepository
             $stmt->bindValue('gender', $data['gender']);
             $stmt->bindValue('username', $data['username']);
             $stmt->bindValue('email', $data['email']);
-            $stmt->bindValue('password', password_hash($data['password'], PASSWORD_BCRYPT));
+            //if password is not empty, update it
+            if (!empty($data['password'])) {
+                $stmt->bindValue('password', sha1(md5($data['password'])));
+            }
             $stmt->bindValue('is_active', $data['is_active']);
             $stmt->bindValue('user_level', $data['user_level']);
             $stmt->bindValue('usersprivileges_id', $data['usersprivileges_id']);

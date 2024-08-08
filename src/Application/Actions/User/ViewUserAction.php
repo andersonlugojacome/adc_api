@@ -9,6 +9,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Get(
  *     path="/users/{id}",
+ *    tags={"users"},
  *     summary="Get user by id",
  *     @OA\Parameter(
  *         name="id",
