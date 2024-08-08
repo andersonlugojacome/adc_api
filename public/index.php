@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+
+
 use App\Application\Handlers\HttpErrorHandler;
 use App\Application\Handlers\ShutdownHandler;
 use App\Application\ResponseEmitter\ResponseEmitter;
@@ -10,6 +12,22 @@ use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Dotenv\Dotenv;
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Info(
+ *     title="My Slim API",
+ *     version="1.0.0",
+ *     description="This is a sample API using Slim Framework and Swagger",
+ *     @OA\Contact(
+ *         email="support@example.com"
+ *     )
+ * )
+ * @OA\Server(
+ *     url="http://localhost:8888",
+ *     description="Localhost"
+ * )
+ */
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -34,6 +52,12 @@ $dependencies($containerBuilder);
 // Set up repositories
 $repositories = require __DIR__ . '/../app/repositories.php';
 $repositories($containerBuilder);
+
+// // Set up Swagger
+// $swagger = require __DIR__ . '/../app/swagger.php';
+// $swagger($containerBuilder);
+
+
 
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();

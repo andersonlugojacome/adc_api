@@ -6,6 +6,7 @@ namespace App\Infrastructure\Persistence\User;
 
 use App\Domain\User\User;
 use Doctrine\DBAL\Connection;
+use OpenApi\Annotations as OA;
 
 class UserRepository
 {
@@ -16,13 +17,14 @@ class UserRepository
         $this->connection = $connection;
     }
 
+
     public function findAll(): array
     {
         $sql = 'SELECT * FROM users';
         $stmt = $this->connection->executeQuery($sql);
         $userData = $stmt->fetchAllAssociative();
 
-        return $userData ;
+        return $userData;
     }
 
     public function findUserOfId($id): ?User
@@ -39,7 +41,7 @@ class UserRepository
         }
         return null;
     }
-
+ 
     public function createUser(array $data): int
     {
         try {
@@ -67,7 +69,7 @@ class UserRepository
             throw new \RuntimeException('Error al crear el usuario', 0, $e);
         }
     }
-
+   
     public function updateUser(int $id, array $data)
     {
         try {
@@ -95,6 +97,7 @@ class UserRepository
         }
     }
 
+   
     public function deleteUser(int $id)
     {
         try {
@@ -107,16 +110,17 @@ class UserRepository
         }
     }
 
+    
     public function findUserByUsername(string $username): ?User
-{
-    $sql = 'SELECT * FROM users WHERE username = :username';
-    $stmt = $this->connection->prepare($sql);
-    $stmt->bindValue('username', $username);
-    $result = $stmt->executeQuery();
-    $userData = $result->fetchAssociative();
+    {
+        $sql = 'SELECT * FROM users WHERE username = :username';
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('username', $username);
+        $result = $stmt->executeQuery();
+        $userData = $result->fetchAssociative();
 
-    return $userData ? $this->mapToUser($userData) : null;
-}
+        return $userData ? $this->mapToUser($userData) : null;
+    }
 
 
 
@@ -140,5 +144,3 @@ class UserRepository
         );
     }
 }
-
-

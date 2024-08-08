@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Swagger\SwaggerAction;
 use App\Application\Settings\SettingsInterface;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
@@ -12,6 +13,8 @@ use Psr\Log\LoggerInterface;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
 use App\Application\Services\JWTService;
+use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 
 
 return function (ContainerBuilder $containerBuilder) {
@@ -52,6 +55,8 @@ return function (ContainerBuilder $containerBuilder) {
                 $secret = getenv('JWT_SECRET') ?: 'Notaria62Notaria62Notaria62Notaria62';
                 return new JWTService($secret);
             },
+            
+        'openapi' => require __DIR__ . '/swagger.php',
 
 
     ]);

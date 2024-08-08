@@ -17,6 +17,11 @@ use Slim\Exception\HttpUnauthorizedException;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
 use Throwable;
 
+/**
+ * Class HttpErrorHandler
+ *
+ * @package App\Application\Handlers
+ */
 class HttpErrorHandler extends SlimErrorHandler
 {
     /**

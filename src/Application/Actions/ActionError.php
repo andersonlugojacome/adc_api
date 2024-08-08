@@ -6,6 +6,8 @@ namespace App\Application\Actions;
 
 use JsonSerializable;
 
+
+
 class ActionError implements JsonSerializable
 {
     public const BAD_REQUEST = 'BAD_REQUEST';

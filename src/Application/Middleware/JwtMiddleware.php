@@ -9,6 +9,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Exception\HttpUnauthorizedException;
+// Add anotation for swagger
+use OpenApi\Annotations as OA;
 
 class JwtMiddleware
 {
@@ -25,7 +27,7 @@ class JwtMiddleware
 
 
         // Permitir el acceso sin token a las rutas de inicio de sesión y registro
-        if ($path === '/login' || $path === '/register' || $path === '/') {
+        if ($path === '/login' || $path === '/register' || $path === '/' || $path === '/docs' || $path === '/docs/swagger.json') {
             return $handler->handle($request);
         }
 

@@ -9,7 +9,29 @@ use App\Infrastructure\Persistence\User\UserRepository;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
-
+use OpenApi\Annotations as OA;
+/**
+ * @OA\Post(
+ *    path="/login",
+ *   summary="Login",
+ *  description="Login by username and password",
+    *  @OA\RequestBody(
+    *      @OA\JsonContent(
+    *          type="object",
+    *          @OA\Property(property="username", type="string"),
+    *          @OA\Property(property="password", type="string")
+    *      )
+    *  ),
+    *  @OA\Response(
+    *      response=200,
+    *      description="Login",
+    *      @OA\JsonContent(
+    *          type="object",
+    *          @OA\Property(property="token", type="string")
+    *      )
+    *  )
+    * )
+ */
 
 class LoginAction extends UserAction
 {

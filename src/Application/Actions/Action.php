@@ -11,6 +11,17 @@ use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 
+
+/**
+ * @OA\Info(
+ *     title="My ADC API - Slim",
+ *     version="1.0.0",
+ *     description="This is documentation for the My ADC API using Slim Framework and Swagger",
+ *     @OA\Contact(
+ *         email="info@digitalesweb.com"
+ *     )
+ * )
+ */
 abstract class Action
 {
     protected LoggerInterface $logger;

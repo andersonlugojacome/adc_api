@@ -7,6 +7,7 @@ use App\Application\Actions\User\ViewUserAction;
 use App\Application\Actions\User\CreateUserAction;
 use App\Application\Actions\User\UpdateUserAction;
 use App\Application\Actions\User\LoginAction;
+use App\Application\Actions\Swagger\SwaggerAction;
 use App\Application\Middleware\JwtMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -19,9 +20,6 @@ return function (App $app) {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
     });
-
-    
-
    
 
     $app->get('/', function (Request $request, Response $response) {
@@ -29,6 +27,16 @@ return function (App $app) {
         $response->getBody()->write('Hello world!');
         return $response;
     });
+
+    // Ruta para la documentación Swagger
+    $app->get('/docs/swagger.json', SwaggerAction::class);
+
+    // Ruta para la interfaz Swagger UI
+    $app->get('/docs', function (Request $request, Response $response) {
+        $response->getBody()->write(file_get_contents(__DIR__ . '/../public/swagger/index.html'));
+        return $response->withHeader('Content-Type', 'text/html');
+    });
+    
      // Ruta de autenticación
      $app->post('/login', LoginAction::class);
 
@@ -37,7 +45,6 @@ return function (App $app) {
         $group->get('/{id}', ViewUserAction::class);
         $group->post('', CreateUserAction::class);
         $group->put('/{id}', UpdateUserAction::class);
-
     })->add(JwtMiddleware::class);
 
     
