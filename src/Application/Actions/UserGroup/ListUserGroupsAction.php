@@ -29,7 +29,7 @@ class ListUserGroupsAction extends UserGroupAction
      */
     protected function action(): Response
     {
-        $userGroups = $this->repository->findAll();
+        $userGroups = $this->userGroupRepository->findAll();
 
         $this->logger->info("User groups list was viewed.");
 

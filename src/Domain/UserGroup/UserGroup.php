@@ -46,19 +46,19 @@ class UserGroup implements JsonSerializable
      * @OA\Property(
      *     description="Group status",
      *     title="Group status",
-     *     type="string"
+     *     type="integer"
      * )
      *
-     * @var string
+     * @var int
      */
     private $group_status;
     /**
      * @param int|null  $id
      * @param string  $group_name
      * @param int  $group_level
-     * @param string  $group_status
+     * @param int  $group_status
      */
-    public function __construct(?int $id, string $group_name, int $group_level, string $group_status)
+    public function __construct(?int $id, string $group_name, int $group_level, int $group_status)
     {
         $this->id = $id;
         $this->group_name = $group_name;
@@ -89,7 +89,7 @@ class UserGroup implements JsonSerializable
     /**
      * @return string
      */
-    public function getGroupStatus(): string
+    public function getGroupStatus(): int
     {
         return $this->group_status;
     }

@@ -60,7 +60,7 @@ return function (App $app) {
         $group->post('', CreateUserGroupAction::class);
         $group->put('/{id}', UpdateUserGroupAction::class);
         $group->delete('/{id}', DeleteUserGroupAction::class);
-    })->add(JwtMiddleware::class);
+    });
 
     
 };

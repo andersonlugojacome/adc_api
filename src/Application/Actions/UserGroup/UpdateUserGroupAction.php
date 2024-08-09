@@ -49,7 +49,7 @@ class UpdateUserGroupAction extends UserGroupAction
     {
         $userGroupId = (int) $this->resolveArg('id');
         $data = $this->getFormData();
-        $userGroup = $this->repository->updateGroup($userGroupId, $data);
+        $userGroup = $this->userGroupRepository->updateGroup($userGroupId, $data);
 
         $this->logger->info("User group of id `{$userGroupId}` was updated.");
 

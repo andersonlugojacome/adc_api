@@ -1,2 +1,12 @@
 [2024-08-08T21:39:38.769880+00:00] slim-app.INFO: Users list was viewed. [] {"uid":"bc4394e"}
 [2024-08-08T22:00:21.488079+00:00] slim-app.INFO: Users list was viewed. [] {"uid":"cacb99b"}
+[2024-08-09T13:54:51.514963+00:00] slim-app.INFO: Users list was viewed. [] {"uid":"ef82b8c"}
+[2024-08-09T13:54:58.531116+00:00] slim-app.INFO: User of id `1` was viewed. [] {"uid":"f0e20a9"}
+[2024-08-09T13:57:00.950724+00:00] slim-app.INFO: User groups list was viewed. [] {"uid":"a516994"}
+[2024-08-09T15:18:42.478308+00:00] slim-app.INFO: Users list was viewed. [] {"uid":"083b23e"}
+[2024-08-09T15:18:51.248673+00:00] slim-app.INFO: User of id `2` was viewed. [] {"uid":"5057757"}
+[2024-08-09T15:32:56.913497+00:00] slim-app.INFO: User groups list was viewed. [] {"uid":"f854237"}
+[2024-08-09T15:54:11.421209+00:00] slim-app.INFO: User groups list was viewed. [] {"uid":"aa4583e"}
+[2024-08-09T16:00:53.553908+00:00] slim-app.INFO: User groups list was viewed. [] {"uid":"2d1cb16"}
+[2024-08-09T16:04:22.310853+00:00] slim-app.INFO: User group of id `1` was viewed. [] {"uid":"6e18a17"}
+[2024-08-09T16:04:28.216765+00:00] slim-app.INFO: User group of id `19` was viewed. [] {"uid":"0f16a62"}

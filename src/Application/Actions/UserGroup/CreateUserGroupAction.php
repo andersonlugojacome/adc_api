@@ -44,7 +44,7 @@ class CreateUserGroupAction extends UserGroupAction
     protected function action(): Response
     {
         $data = $this->getFormData();
-        $userGroup = $this->repository->createGroup($data);
+        $userGroup = $this->userGroupRepository->createGroup($data);
 
         $this->logger->info("User group of id `{$userGroup}` was created.");
 

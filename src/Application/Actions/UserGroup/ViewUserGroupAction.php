@@ -41,7 +41,7 @@ class ViewUserGroupAction extends UserGroupAction
     protected function action(): Response
     {
         $userGroupId = (int) $this->resolveArg('id');
-        $userGroup = $this->repository->findGroupOfId($userGroupId);
+        $userGroup = $this->userGroupRepository->findGroupOfId($userGroupId);
 
         $this->logger->info("User group of id `{$userGroupId}` was viewed.");
 

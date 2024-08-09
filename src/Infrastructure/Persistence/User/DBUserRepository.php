@@ -5,19 +5,23 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\User;
 
 use App\Domain\User\User;
+use App\Domain\User\UserRepository;
+use App\Domain\User\UserNotFoundException;
 use Doctrine\DBAL\Connection;
 use OpenApi\Annotations as OA;
 
-class UserRepository
+class DBUserRepository implements UserRepository
 {
-    private $connection;
+    private  $connection;
 
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function findAll(): array
     {
         $sql = 'SELECT * FROM users';
@@ -27,7 +31,10 @@ class UserRepository
         return $userData;
     }
 
-    public function findUserOfId($id): ?User
+    /**
+     * {@inheritdoc}
+     */
+    public function findUserOfId(int $id): User
     {
         try {
             $sql = 'SELECT * FROM users WHERE id = :id';
@@ -37,12 +44,15 @@ class UserRepository
             $userData = $result->fetchAssociative();
             return $userData ? $this->mapToUser($userData) : null;
         } catch (\Exception $e) {
-            throw new \RuntimeException('Error al buscar el usuario por ID', 0, $e);
+            throw new UserNotFoundException();
         }
-        return null;
+        
     }
- 
-    public function createUser(array $data): int
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createUser(array $data): User
     {
         try {
             $sql = 'INSERT INTO users (name, lastname, cc, gender, username, email, password, is_active, user_level, usersprivileges_id, is_admin, created_at, last_login)
@@ -64,13 +74,16 @@ class UserRepository
             $stmt->bindValue('last_login', $data['last_login']);
             $stmt->executeQuery();
 
-            return (int) $this->connection->lastInsertId();
+            return $this->findUserByUsername($data['username']);
         } catch (\Exception $e) {
             throw new \RuntimeException('Error al crear el usuario', 0, $e);
         }
     }
-   
-    public function updateUser(int $id, array $data)
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateUser(int $id, array $data):?User
     {
         try {
             $sql = 'UPDATE users SET name = :name, lastname = :lastname, cc = :cc, gender = :gender, username = :username, email = :email, password = :password, 
@@ -95,13 +108,16 @@ class UserRepository
             $stmt->bindValue('last_login', $data['last_login']);
             $stmt->bindValue('id', $id);
             $stmt->executeQuery();
+            return $this->findUserOfId($id);
         } catch (\Exception $e) {
             throw new \RuntimeException('Error al actualizar el usuario', 0, $e);
         }
     }
 
-   
-    public function deleteUser(int $id)
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteUser(int $id): void
     {
         try {
             $sql = 'DELETE FROM users WHERE id = :id';
@@ -113,7 +129,9 @@ class UserRepository
         }
     }
 
-    
+    /**
+     * {@inheritdoc}
+     */
     public function findUserByUsername(string $username): ?User
     {
         $sql = 'SELECT * FROM users WHERE username = :username';
@@ -126,7 +144,9 @@ class UserRepository
     }
 
 
-
+    /**
+     * {@inheritdoc}
+     */
     private function mapToUser(array $data): User
     {
         return new User(

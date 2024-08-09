@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\UserGroup;
 
 use App\Domain\UserGroup\UserGroup;
+use App\Domain\UserGroup\UserGroupRepository;
 use Doctrine\DBAL\Connection;
 
-class UserGroupRepository
+class DBUserGroupRepository implements UserGroupRepository
 {
     private Connection $connection;
 
@@ -15,7 +16,9 @@ class UserGroupRepository
     {
         $this->connection = $connection;
     }
-
+    /**
+     * {@inheritdoc}
+     */
     public function findAll(): array
     {
         $sql = 'SELECT * FROM user_groups';
@@ -24,7 +27,9 @@ class UserGroupRepository
 
         return $groupData;
     }
-
+    /**
+     * {@inheritdoc}
+     */
     public function findGroupOfId(int $id): ?UserGroup
     {
         $sql = 'SELECT * FROM user_groups WHERE id = :id';
@@ -35,24 +40,30 @@ class UserGroupRepository
 
         return $groupData ? $this->mapToUserGroup($groupData) : null;
     }
-
-    public function createGroup(array $data): UserGroup
+    /**
+     * {@inheritdoc}
+     */
+    public function create(UserGroup $data): ?UserGroup
     {
         $sql = 'INSERT INTO user_groups (group_name, group_level, group_status) 
                 VALUES (:group_name, :group_level, :group_status)';
-        
+
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('group_name', $data['group_name']);
         $stmt->bindValue('group_level', $data['group_level']);
         $stmt->bindValue('group_status', $data['group_status']);
 
-        $stmt->executeQuery();
+
+        $result = $stmt->executeQuery();
+
 
         $id = (int) $this->connection->lastInsertId();
-        return $this->findGroupOfId($id);
+        return  $this->findGroupOfId($id);
     }
-
-    public function updateGroup(int $id, array $data): ?UserGroup
+    /**
+     * {@inheritdoc}
+     */
+    public function update(UserGroup $data): ?UserGroup
     {
         $sql = 'UPDATE user_groups SET 
                 group_name = :group_name, 
@@ -61,22 +72,43 @@ class UserGroupRepository
                 WHERE id = :id';
 
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('id', $id);
+        $stmt->bindValue('id', $data['id']);
         $stmt->bindValue('group_name', $data['group_name']);
         $stmt->bindValue('group_level', $data['group_level']);
         $stmt->bindValue('group_status', $data['group_status']);
 
         $stmt->executeQuery();
 
-        return $this->findGroupOfId($id);
+        return $this->findGroupOfId($data['id']);
     }
-
-    public function deleteGroup(int $id): void
+    /**
+     * {@inheritdoc}
+     */
+    public function delete(int $id): bool
     {
-        $sql = 'DELETE FROM user_groups WHERE id = :id';
+        try {
+
+            $sql = 'DELETE FROM user_groups WHERE id = :id';
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindValue('id', $id);
+            $stmt->executeQuery();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function findGroupOfName(string $group_name): UserGroup
+    {
+        $sql = 'SELECT * FROM user_groups WHERE group_name = :group_name';
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('id', $id);
-        $stmt->executeQuery();
+        $stmt->bindValue('group_name', $group_name);
+        $result = $stmt->executeQuery();
+        $groupData = $result->fetchAssociative();
+
+        return $this->mapToUserGroup($groupData);
     }
 
     private function mapToUserGroup(array $data): UserGroup
