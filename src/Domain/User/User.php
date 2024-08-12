@@ -6,22 +6,22 @@ namespace App\Domain\User;
 use OpenApi\Annotations as OA;
 
 use JsonSerializable;
+
 /**
  * @OA\Schema(
- *     schema="User",
  *     required={"id", "name", "lastname", "cc", "gender", "username", "email", "password", "is_active", "user_level", "usersprivileges_id", "is_admin", "created_at"},
- *     @OA\Property(property="id", type="integer", format="int64"),
+ *     @OA\Property(property="id", type="integer"),
  *     @OA\Property(property="name", type="string"),
  *     @OA\Property(property="lastname", type="string"),
- *     @OA\Property(property="cc", type="string"),
- *     @OA\Property(property="gender", type="string"),
+ *     @OA\Property(property="cc", type="integer"),
+ *     @OA\Property(property="gender", type="integer"),
  *     @OA\Property(property="username", type="string"),
  *     @OA\Property(property="email", type="string"),
  *     @OA\Property(property="password", type="string"),
- *     @OA\Property(property="is_active", type="boolean"),
+ *     @OA\Property(property="is_active", type="integer"),
  *     @OA\Property(property="user_level", type="integer"),
  *     @OA\Property(property="usersprivileges_id", type="integer"),
- *     @OA\Property(property="is_admin", type="boolean"),
+ *     @OA\Property(property="is_admin", type="integer"),
  *     @OA\Property(property="created_at", type="string", format="date-time"),
  *     @OA\Property(property="last_login", type="string", format="date-time")
  * )

@@ -14,11 +14,14 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
-use App\Application\Actions\UserGroup\ListUserGroupsAction;
-use App\Application\Actions\UserGroup\ViewUserGroupAction;
-use App\Application\Actions\UserGroup\CreateUserGroupAction;
-use App\Application\Actions\UserGroup\UpdateUserGroupAction;
-use App\Application\Actions\UserGroup\DeleteUserGroupAction;
+
+
+use App\Application\Actions\Role\ListRolesAction;
+use App\Application\Actions\Permission\ListPermissionsAction;
+use App\Application\Actions\Menu\ListMenusAction;
+
+use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesAction;
+use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesByDateAction;
 
 
 
@@ -53,14 +56,45 @@ return function (App $app) {
         $group->post('', CreateUserAction::class);
         $group->put('/{id}', UpdateUserAction::class);
     })->add(JwtMiddleware::class);
-    // add /user-groups
-    $app->group('/user-groups', function (Group $group) {
-        $group->get('', ListUserGroupsAction::class);
-        $group->get('/{id}', ViewUserGroupAction::class);
-        $group->post('', CreateUserGroupAction::class);
-        $group->put('/{id}', UpdateUserGroupAction::class);
-        $group->delete('/{id}', DeleteUserGroupAction::class);
-    });
+   
+    // add /roles 
+    $app->group('/roles', function (Group $group) {
+        $group->get('', ListRolesAction::class);
+        // $group->get('/{id}', ViewRoleAction::class);
+        // $group->post('', CreateRoleAction::class);
+        // $group->put('/{id}', UpdateRoleAction::class);
+        // $group->delete('/{id}', DeleteRoleAction::class);
+    })->add(JwtMiddleware::class);
+
+    // add /permissions
+    $app->group('/permissions', function (Group $group) {
+         $group->get('', ListPermissionsAction::class);
+        // $group->get('/{id}', ViewPermissionAction::class);
+        // $group->post('', CreatePermissionAction::class);
+        // $group->put('/{id}', UpdatePermissionAction::class);
+        // $group->delete('/{id}', DeletePermissionAction::class);
+    })->add(JwtMiddleware::class);
+
+    // add /menus
+    $app->group('/menus', function (Group $group) {
+        $group->get('', ListMenusAction::class);
+        // $group->get('/{id}', ViewMenuAction::class);
+        // $group->post('', CreateMenuAction::class);
+        // $group->put('/{id}', UpdateMenuAction::class);
+        // $group->delete('/{id}', DeleteMenuAction::class);
+    })->add(JwtMiddleware::class);
+
+     $app->group('/certificate-consecutives', function (Group $group) {
+        $group->get('', ListCertificateConsecutivesAction::class);
+        $group->get('/{begingDate}/{endDate}', ListCertificateConsecutivesByDateAction::class);
+        // $group->get('/{id}', ViewCertificateConsecutivesAction::class);
+        // $group->post('', CreateCertificateConsecutivesAction::class);
+        // $group->put('/{id}', UpdateCertificateConsecutivesAction::class);
+        // $group->delete('/{id}', DeleteCertificateConsecutivesAction::class);
+    })->add(JwtMiddleware::class);
+
+
+
 
     
 };

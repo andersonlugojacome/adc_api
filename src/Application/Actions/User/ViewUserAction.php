@@ -6,19 +6,19 @@ namespace App\Application\Actions\User;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use OpenApi\Annotations as OA;
+
 /**
  * @OA\Get(
  *     path="/users/{id}",
- *    tags={"users"},
- *     summary="Get user by id",
+ *     tags={"users"},
+ *     summary="View user by ID",
+ *     description="Returns a single user by ID",
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
  *         description="ID of user to return",
  *         required=true,
- *         @OA\Schema(
- *             type="integer"
- *         )
+ *         @OA\Schema(type="integer")
  *     ),
  *     @OA\Response(
  *         response=200,
@@ -31,6 +31,7 @@ use OpenApi\Annotations as OA;
  *     )
  * )
  */
+
 class ViewUserAction extends UserAction
 {
     /**
@@ -40,9 +41,6 @@ class ViewUserAction extends UserAction
     {
         $userId = (int) $this->resolveArg('id');
         $user = $this->userRepository->findUserOfId($userId);
-        //Hidde password
-        
-       
 
         $this->logger->info("User of id `{$userId}` was viewed.");
 
