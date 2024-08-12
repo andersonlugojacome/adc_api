@@ -10,7 +10,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Get(
  *     path="/certificateConsecutives/{begingDate}/{endDate}",
- *     tags={"certificateConsecutives"},
+ *     tags={"certificate-consecutives"},
  *     summary="List certificateConsecutives by date",
  *     description="Returns a list of certificateConsecutives by date",
  *     @OA\Parameter(
