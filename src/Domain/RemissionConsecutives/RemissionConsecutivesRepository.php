@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\CertificateConsecutives;
+namespace App\Domain\RemissionConsecutives;
 
-interface CertificateConsecutivesRepository 
+interface RemissionConsecutivesRepository 
 {
     /**
      * Encuentra todos los consecutivos de certificados.
      *
-     * @return CertificateConsecutives[]
+     * @return RemissionConsecutives[]
      */
     public function findAll(): array;
 
     /**
-     * Encuentra todos los consecutivos de certificados segun la fecha begingDate and endDate.
+     * Encuentra todos los consecutivos de remisiones segun la fecha begingDate and endDate.
      * @param string $begingDate
      * @param string $endDate
-     * @return CertificateConsecutives[]
+     * @return RemissionConsecutives[]
      */
     public function findAllByDate(string $begingDate, string $endDate): array;
 
@@ -25,27 +25,27 @@ interface CertificateConsecutivesRepository
      * Encuentra un consecutivo de certificado por su ID.
      *
      * @param int $id
-     * @return CertificateConsecutives
-     * @throws CertificateConsecutivesNotFoundException
+     * @return RemissionConsecutives
+     * @throws RemissionConsecutivesNotFoundException
      */
-    public function findOfId(int $id): CertificateConsecutives;
+    public function findOfId(int $id): RemissionConsecutives;
 
     /**
      * Crea un nuevo consecutivo de certificado.
      *
      * @param array $data
-     * @return CertificateConsecutives
+     * @return RemissionConsecutives
      */
-    public function create(array $data): CertificateConsecutives;
+    public function create(array $data): RemissionConsecutives;
 
     /**
      * Actualiza un consecutivo de certificado existente.
      *
      * @param int $id
      * @param array $data
-     * @return CertificateConsecutives
+     * @return RemissionConsecutives
      */
-    public function update(int $id, array $data): ?CertificateConsecutives;
+    public function update(int $id, array $data): ?RemissionConsecutives;
 
     /**
      * Elimina un consecutivo de certificado por su ID.
@@ -57,8 +57,8 @@ interface CertificateConsecutivesRepository
      * Encuentra un consecutivo de certificado por su consecutivo.
      *
      * @param string $consecutivo
-     * @return CertificateConsecutives
-     * @throws CertificateConsecutivesNotFoundException
+     * @return RemissionConsecutives
+     * @throws RemissionConsecutivesNotFoundException
      */
-    public function findByConsecutivo(string $consecutivo):? CertificateConsecutives;
+    public function findByConsecutivo(string $consecutivo):? RemissionConsecutives;
 }
