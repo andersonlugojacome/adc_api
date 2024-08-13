@@ -13,7 +13,7 @@ use OpenApi\Annotations as OA;
 
 class DBUserRepository implements UserRepository
 {
-    private  $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
