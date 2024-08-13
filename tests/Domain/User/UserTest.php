@@ -60,15 +60,26 @@ class UserTest extends TestCase
         $this->assertEquals($lastname, $user->getLastName());
         $this->assertEquals($cc, $user->getCc());
         $this->assertEquals($gender, $user->getGender());
-        
+
     }
 
     /**
      * @dataProvider userProvider
      * @param int    $id
-     * @param string $username
-     * @param string $firstName
+     * @param string $name¡
      * @param string $lastName
+     * @param int    $cc
+     * @param int    $gender
+     * @param string $username
+     * @param string $email
+     * @param string $password
+     * @param int    $is_active
+     * @param int    $user_level
+     * @param int    $usersprivileges_id
+     * @param int    $is_admin
+     * @param string $created_at
+     * @param string $last_login
+     * @return void
      */
     public function testJsonSerialize(int $id, string $name, string $lastname, int $cc, int $gender, string $username, string $email, string $password, int $is_active, int $user_level, int $usersprivileges_id, int $is_admin, string $created_at, string $last_login)
     {
