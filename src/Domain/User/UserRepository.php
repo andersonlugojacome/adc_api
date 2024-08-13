@@ -53,4 +53,31 @@ interface UserRepository
      * @throws UserNotFoundException
      */
     public function findUserByUsername(string $username):? User;
+
+    //For login
+
+    /**
+     * Verifica si la cuenta está bloqueada.
+     *
+     * @param string $username
+     * @param string $ipAddress
+     * @return bool
+     */
+    public function isAccountLocked(string $username, string $ipAddress): bool;
+
+    /**
+     * Registra un intento fallido.
+     *
+     * @param string $username
+     * @param string $ipAddress
+     */
+    public function registerFailedAttempt(string $username, string $ipAddress): void;
+
+    /**
+     * Resetea los intentos fallidos.
+     *
+     * @param string $username
+     * @param string $ipAddress
+     */
+    public function resetFailedAttempts(string $username,string $ipAddress): void;
 }

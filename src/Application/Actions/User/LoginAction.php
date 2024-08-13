@@ -45,14 +45,29 @@ class LoginAction extends UserAction
         $this->jwtService = $jwtService;
     }
 
+
     protected function action(): Response
     {
         $data = $this->getFormData();
+        $ipAddress = $this->request->getServerParams()['REMOTE_ADDR'];
+
+        // Verificar si la cuenta está bloqueada
+        if ($this->userRepository->isAccountLocked($data['username'], $ipAddress)) {
+            $response = $this->response->withStatus(403);
+            $response->getBody()->write(json_encode(
+                [
+                    'error' => 'Account Locked',
+                    'message' => 'Too many failed login attempts. Please try again later.',
+                ]
+            ));
+            return $response;
+        }
 
         $user = $this->userRepository->findUserByUsername($data['username']);
 
-        // verify if user is active
-        if (!$user->getIsActive()) {
+        // Verificar si el usuario está activo
+        if (!$user || !$user->getIsActive()) {
+            $this->userRepository->registerFailedAttempt($data['username'], $ipAddress);
             $response = $this->response->withStatus(401);
             $response->getBody()->write(json_encode(
                 [
@@ -63,7 +78,9 @@ class LoginAction extends UserAction
             return $response;
         }
 
+        // Verificar contraseña
         if (!$user || $user->getPassword() !== sha1(md5($data['password']))) {
+            $this->userRepository->registerFailedAttempt($data['username'], $ipAddress);
             $response = $this->response->withStatus(401);
             $response->getBody()->write(json_encode(
                 [
@@ -73,6 +90,10 @@ class LoginAction extends UserAction
             ));
             return $response;
         }
+
+        // Si el login es exitoso, reiniciar los intentos fallidos
+        $this->userRepository->resetFailedAttempts($data['username'], $ipAddress);
+
         $token = $this->jwtService->generateToken([
             'id' => $user->getId(),
             'username' => $user->getUsername(),
@@ -80,4 +101,46 @@ class LoginAction extends UserAction
 
         return $this->respondWithData(['token' => $token]);
     }
+
+   
+
+
+
+
+
+    // protected function action(): Response
+    // {
+    //     $data = $this->getFormData();
+
+    //     $user = $this->userRepository->findUserByUsername($data['username']);
+
+    //     // verify if user is active
+    //     if (!$user->getIsActive()) {
+    //         $response = $this->response->withStatus(401);
+    //         $response->getBody()->write(json_encode(
+    //             [
+    //                 'error' => 'Unauthorized',
+    //                 'message' => 'User is not active or does not exist',
+    //             ]
+    //         ));
+    //         return $response;
+    //     }
+
+    //     if (!$user || $user->getPassword() !== sha1(md5($data['password']))) {
+    //         $response = $this->response->withStatus(401);
+    //         $response->getBody()->write(json_encode(
+    //             [
+    //                 'error' => 'Unauthorized',
+    //                 'message' => 'Invalid username or password',
+    //             ]
+    //         ));
+    //         return $response;
+    //     }
+    //     $token = $this->jwtService->generateToken([
+    //         'id' => $user->getId(),
+    //         'username' => $user->getUsername(),
+    //     ]);
+
+    //     return $this->respondWithData(['token' => $token]);
+    // }
 }

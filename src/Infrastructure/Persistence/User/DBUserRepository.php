@@ -8,6 +8,7 @@ use App\Domain\User\User;
 use App\Domain\User\UserRepository;
 use App\Domain\User\UserNotFoundException;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use OpenApi\Annotations as OA;
 
 class DBUserRepository implements UserRepository
@@ -46,7 +47,6 @@ class DBUserRepository implements UserRepository
         } catch (\Exception $e) {
             throw new UserNotFoundException();
         }
-        
     }
 
     /**
@@ -83,7 +83,7 @@ class DBUserRepository implements UserRepository
     /**
      * {@inheritdoc}
      */
-    public function updateUser(int $id, array $data):?User
+    public function updateUser(int $id, array $data): ?User
     {
         try {
             $sql = 'UPDATE users SET name = :name, lastname = :lastname, cc = :cc, gender = :gender, username = :username, email = :email, password = :password, 
@@ -165,5 +165,80 @@ class DBUserRepository implements UserRepository
             $data['created_at'],
             $data['last_login'] ?? null
         );
+    }
+
+
+    //for loginAction
+    /**
+     * {@inheritdoc}
+     */
+    public function isAccountLocked(string $username, string $ipAddress): bool
+    {
+        $sql = 'SELECT locked_until FROM failed_login_attempts 
+            WHERE username = :username AND ip_address = :ip_address';
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('username', $username);
+        $stmt->bindValue('ip_address', $ipAddress);
+        $stamt = $stmt->executeQuery();
+        $result = $stamt->fetchAssociative();
+
+        if ($result && $result['locked_until'] && strtotime($result['locked_until']) > time()) {
+            return true;
+        }
+
+        return false;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function registerFailedAttempt(string $username, string $ipAddress): void
+    {
+        $sql = 'INSERT INTO failed_login_attempts (username, ip_address, attempts) 
+            VALUES (:username, :ip_address, 1)
+            ON DUPLICATE KEY UPDATE attempts = attempts + 1, last_attempt = CURRENT_TIMESTAMP';
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('username', $username);
+        $stmt->bindValue('ip_address', $ipAddress);
+        $stmt->executeQuery();
+
+        // Verificar si el número de intentos supera el umbral permitido
+        $this->lockAccountIfNeeded($username, $ipAddress);
+    }
+
+    public function lockAccountIfNeeded(string $username, string $ipAddress): void
+    {
+        $maxAttempts = 5; // Número máximo de intentos permitidos
+        $lockoutTime = 5 * 60; // Tiempo de bloqueo en segundos (15 minutos)
+    
+        $sql = 'SELECT attempts FROM failed_login_attempts 
+                WHERE username = :username AND ip_address = :ip_address';
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('username', $username);
+        $stmt->bindValue('ip_address', $ipAddress);
+        $stmt = $stmt->executeQuery();
+        $result = $stmt->fetchAssociative();
+    
+        if ($result && $result['attempts'] >= $maxAttempts) {
+            $lockUntil = date('Y-m-d H:i:s', time() + $lockoutTime);
+            $sql = 'UPDATE failed_login_attempts 
+                    SET locked_until = :locked_until 
+                    WHERE username = :username AND ip_address = :ip_address';
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindValue('locked_until', $lockUntil);
+            $stmt->bindValue('username', $username);
+            $stmt->bindValue('ip_address', $ipAddress);
+            $stmt->executeQuery();
+        }
+    }
+    
+
+    public function resetFailedAttempts(string $username, string $ipAddress): void
+    {
+        $sql = 'DELETE FROM failed_login_attempts WHERE username = :username AND ip_address = :ip_address';
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('username', $username);
+        $stmt->bindValue('ip_address', $ipAddress);
+        $stmt->executeQuery();
     }
 }
