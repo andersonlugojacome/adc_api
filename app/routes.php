@@ -23,6 +23,9 @@ use App\Application\Actions\Menu\ListMenusAction;
 use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesAction;
 use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesByDateAction;
 
+use App\Application\Actions\RemissionConsecutives\ListRemissionConsecutivesAction;
+use App\Application\Actions\RemissionConsecutives\ListRemissionConsecutivesByDateAction;
+
 
 
 return function (App $app) {
@@ -91,6 +94,15 @@ return function (App $app) {
         // $group->post('', CreateCertificateConsecutivesAction::class);
         // $group->put('/{id}', UpdateCertificateConsecutivesAction::class);
         // $group->delete('/{id}', DeleteCertificateConsecutivesAction::class);
+    })->add(JwtMiddleware::class);
+
+    $app->group('/remission-consecutives', function (Group $group) {
+        $group->get('', ListRemissionConsecutivesAction::class);
+        $group->get('/{begingDate}/{endDate}', ListRemissionConsecutivesByDateAction::class);
+        // $group->get('/{id}', ViewRemissionConsecutivesAction::class);
+        // $group->post('', CreateRemissionConsecutivesAction::class);
+        // $group->put('/{id}', UpdateRemissionConsecutivesAction::class);
+        // $group->delete('/{id}', DeleteRemissionConsecutivesAction::class);
     })->add(JwtMiddleware::class);
 
 

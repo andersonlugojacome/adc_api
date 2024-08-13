@@ -13,6 +13,8 @@ use App\Domain\Menu\MenuRepository as IMenuRepository;
 use App\Infrastructure\Persistence\Menu\DBMenuRepository;
 use App\Domain\CertificateConsecutives\CertificateConsecutivesRepository as ICertificateConsecutivesRepository;
 use App\Infrastructure\Persistence\CertificateConsecutives\DBCertificateConsecutivesRepository;
+use App\Domain\RemissionConsecutives\RemissionConsecutivesRepository as IRemissionConsecutivesRepository;
+use App\Infrastructure\Persistence\RemissionConsecutives\DBRemissionConsecutivesRepository;
 
 
 
@@ -37,6 +39,9 @@ return function (ContainerBuilder $containerBuilder) {
         },
         ICertificateConsecutivesRepository::class => function ($c) {
             return new DBCertificateConsecutivesRepository($c->get('db'));
+        },
+        IRemissionConsecutivesRepository::class => function ($c) {
+            return new DBRemissionConsecutivesRepository($c->get('db'));
         },
         
        
