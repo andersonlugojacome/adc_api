@@ -53,12 +53,6 @@ $dependencies($containerBuilder);
 $repositories = require __DIR__ . '/../app/repositories.php';
 $repositories($containerBuilder);
 
-// // Set up Swagger
-// $swagger = require __DIR__ . '/../app/swagger.php';
-// $swagger($containerBuilder);
-
-
-
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
 

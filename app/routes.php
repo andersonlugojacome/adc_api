@@ -25,7 +25,7 @@ use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesB
 
 use App\Application\Actions\RemissionConsecutives\ListRemissionConsecutivesAction;
 use App\Application\Actions\RemissionConsecutives\ListRemissionConsecutivesByDateAction;
-
+use App\Application\Actions\RemissionConsecutives\CreateRemissionConsecutivesAction;
 
 
 return function (App $app) {
@@ -37,7 +37,7 @@ return function (App $app) {
 
     $app->get('/', function (Request $request, Response $response) {
         
-        $response->getBody()->write('Hello world!');
+        $response->getBody()->write('Hello world! - DigitalesWeb');
         return $response;
     });
 
@@ -100,7 +100,7 @@ return function (App $app) {
         $group->get('', ListRemissionConsecutivesAction::class);
         $group->get('/{begingDate}/{endDate}', ListRemissionConsecutivesByDateAction::class);
         // $group->get('/{id}', ViewRemissionConsecutivesAction::class);
-        // $group->post('', CreateRemissionConsecutivesAction::class);
+        $group->post('', CreateRemissionConsecutivesAction::class);
         // $group->put('/{id}', UpdateRemissionConsecutivesAction::class);
         // $group->delete('/{id}', DeleteRemissionConsecutivesAction::class);
     })->add(JwtMiddleware::class);
