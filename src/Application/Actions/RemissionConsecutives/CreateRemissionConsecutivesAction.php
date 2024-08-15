@@ -33,7 +33,7 @@ use OpenApi\Annotations as OA;
  *            @OA\Property(property="consecutivo", type="string", format="string", example="123456789"),
  *            @OA\Property(property="nroescriturapublica", type="string", format="string", example="123456789"),
  *            @OA\Property(property="radicado", type="string", format="string", example="123456789"),
- * @OA\Property(property="tipo", type="string", format="string", example="123456789"),
+ *            @OA\Property(property="tipo", type="string", format="string", example="123456789"),
  *            @OA\Property(property="user_id", type="integer", format="int64", example=1)
  *        )
  *    ),

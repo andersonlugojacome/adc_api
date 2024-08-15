@@ -26,6 +26,7 @@ use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesB
 use App\Application\Actions\RemissionConsecutives\ListRemissionConsecutivesAction;
 use App\Application\Actions\RemissionConsecutives\ListRemissionConsecutivesByDateAction;
 use App\Application\Actions\RemissionConsecutives\CreateRemissionConsecutivesAction;
+use App\Application\Actions\RemissionConsecutives\UpdateRemissionConsecutivesAction;
 
 
 return function (App $app) {
@@ -33,10 +34,10 @@ return function (App $app) {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
     });
-   
+
 
     $app->get('/', function (Request $request, Response $response) {
-        
+
         $response->getBody()->write('Hello world! - DigitalesWeb');
         return $response;
     });
@@ -49,9 +50,9 @@ return function (App $app) {
         $response->getBody()->write(file_get_contents(__DIR__ . '/../public/swagger/index.html'));
         return $response->withHeader('Content-Type', 'text/html');
     });
-    
-     // Ruta de autenticación
-     $app->post('/login', LoginAction::class);
+
+    // Ruta de autenticación
+    $app->post('/login', LoginAction::class);
 
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
@@ -59,7 +60,7 @@ return function (App $app) {
         $group->post('', CreateUserAction::class);
         $group->put('/{id}', UpdateUserAction::class);
     })->add(JwtMiddleware::class);
-   
+
     // add /roles 
     $app->group('/roles', function (Group $group) {
         $group->get('', ListRolesAction::class);
@@ -71,7 +72,7 @@ return function (App $app) {
 
     // add /permissions
     $app->group('/permissions', function (Group $group) {
-         $group->get('', ListPermissionsAction::class);
+        $group->get('', ListPermissionsAction::class);
         // $group->get('/{id}', ViewPermissionAction::class);
         // $group->post('', CreatePermissionAction::class);
         // $group->put('/{id}', UpdatePermissionAction::class);
@@ -87,7 +88,7 @@ return function (App $app) {
         // $group->delete('/{id}', DeleteMenuAction::class);
     })->add(JwtMiddleware::class);
 
-     $app->group('/certificate-consecutives', function (Group $group) {
+    $app->group('/certificate-consecutives', function (Group $group) {
         $group->get('', ListCertificateConsecutivesAction::class);
         $group->get('/{begingDate}/{endDate}', ListCertificateConsecutivesByDateAction::class);
         // $group->get('/{id}', ViewCertificateConsecutivesAction::class);
@@ -101,12 +102,7 @@ return function (App $app) {
         $group->get('/{begingDate}/{endDate}', ListRemissionConsecutivesByDateAction::class);
         // $group->get('/{id}', ViewRemissionConsecutivesAction::class);
         $group->post('', CreateRemissionConsecutivesAction::class);
-        // $group->put('/{id}', UpdateRemissionConsecutivesAction::class);
+        $group->put('/{id}', UpdateRemissionConsecutivesAction::class);
         // $group->delete('/{id}', DeleteRemissionConsecutivesAction::class);
     })->add(JwtMiddleware::class);
-
-
-
-
-    
 };

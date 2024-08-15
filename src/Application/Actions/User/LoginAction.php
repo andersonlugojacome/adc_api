@@ -102,7 +102,7 @@ class LoginAction extends UserAction
         return $this->respondWithData(['token' => $token]);
     }
 
-   
+
 
 
 
