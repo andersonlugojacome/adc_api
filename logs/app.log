@@ -127,3 +127,6 @@
 [2024-08-12T22:35:19.908654+00:00] slim-app.INFO: CertificateConsecutives list was viewed. [] {"uid":"9c5faaa"}
 [2024-08-12T22:47:01.135062+00:00] slim-app.INFO: CertificateConsecutives list date Ranger was viewed. [] {"uid":"0c526a4"}
 [2024-08-12T22:47:09.649750+00:00] slim-app.INFO: CertificateConsecutives list date Ranger was viewed. [] {"uid":"5ea4b02"}
+[2024-08-20T23:05:10.606093+00:00] slim-app.INFO: User of id `1` was viewed. [] {"uid":"0156d3d"}
+[2024-08-20T23:07:28.722790+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"744ae99"}
+[2024-08-20T23:07:48.774679+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"8b4bece"}

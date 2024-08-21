@@ -31,14 +31,14 @@ class JwtMiddleware
             return $handler->handle($request);
         }
 
-
-
         $authHeader = $request->getHeader('Authorization');
-        if (!$authHeader) {
+        if (!$authHeader || count($authHeader) === 0) {
             throw new HttpUnauthorizedException($request, 'Token not provided.');
         }
 
         $token = str_replace('Bearer ', '', $authHeader[0]);
+        error_log('Token received: ' . $token);
+
         try {
             $this->jwtService->validateToken($token);
         } catch (\Exception $e) {

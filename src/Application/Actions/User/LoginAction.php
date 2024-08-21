@@ -97,6 +97,11 @@ class LoginAction extends UserAction
         $token = $this->jwtService->generateToken([
             'id' => $user->getId(),
             'username' => $user->getUsername(),
+            'name' => $user->getName(),
+            'lastname' => $user->getLastName(),
+            'gender' => $user->getGender(),
+            'email' => $user->getEmail(),
+            'isActive' => $user->getIsActive(),
         ]);
 
         return $this->respondWithData(['token' => $token]);
