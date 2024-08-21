@@ -27,14 +27,9 @@ class ListMenusAction extends MenuAction
      */
     protected function action(): Response
     {
-        $data =  $this->getFormData();
-        $userId = (int)$data['id'];
-        $users = $this->menuRepository->findMenuForUser($userId);
-        
-        
-
+        $data = $this->menuRepository->findAll();
         $this->logger->info("Menus list was viewed.");
 
-        return $this->respondWithData($users);
+        return $this->respondWithData($data);
     }
 }

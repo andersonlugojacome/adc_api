@@ -19,6 +19,7 @@ use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use App\Application\Actions\Role\ListRolesAction;
 use App\Application\Actions\Permission\ListPermissionsAction;
 use App\Application\Actions\Menu\ListMenusAction;
+use App\Application\Actions\Menu\ViewMenuAction;
 
 use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesAction;
 use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesByDateAction;
@@ -82,7 +83,7 @@ return function (App $app) {
     // add /menus
     $app->group('/menus', function (Group $group) {
         $group->get('', ListMenusAction::class);
-        // $group->get('/{id}', ViewMenuAction::class);
+        $group->get('/{id}', ViewMenuAction::class);
         // $group->post('', CreateMenuAction::class);
         // $group->put('/{id}', UpdateMenuAction::class);
         // $group->delete('/{id}', DeleteMenuAction::class);

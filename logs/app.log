@@ -130,3 +130,21 @@
 [2024-08-20T23:05:10.606093+00:00] slim-app.INFO: User of id `1` was viewed. [] {"uid":"0156d3d"}
 [2024-08-20T23:07:28.722790+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"744ae99"}
 [2024-08-20T23:07:48.774679+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"8b4bece"}
+[2024-08-21T12:38:03.271341+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"b8ad538"}
+[2024-08-21T12:39:11.246801+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"93fa690"}
+[2024-08-21T12:39:12.588351+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"5b51040"}
+[2024-08-21T12:39:19.714372+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"257c610"}
+[2024-08-21T13:45:23.442369+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"cbaf60f"}
+[2024-08-21T13:53:15.796477+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"9fe010d"}
+[2024-08-21T13:53:24.852460+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"f1f747d"}
+[2024-08-21T13:53:25.806036+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"e995b5b"}
+[2024-08-21T13:53:26.553134+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"8d3ec00"}
+[2024-08-21T13:53:41.795557+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"119b1bf"}
+[2024-08-21T13:53:45.584666+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"7de4017"}
+[2024-08-21T13:54:08.399592+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"f41ca9e"}
+[2024-08-21T13:59:48.150304+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"0e62699"}
+[2024-08-21T13:59:49.032121+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"cdf77b0"}
+[2024-08-21T14:00:01.994746+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"a02c59c"}
+[2024-08-21T14:00:02.744906+00:00] slim-app.INFO: Menus list was viewed. [] {"uid":"2b0523a"}
+[2024-08-21T14:00:08.700485+00:00] slim-app.INFO: Menu of id `1` was viewed. [] {"uid":"2b9ff99"}
+[2024-08-21T14:29:13.473600+00:00] slim-app.INFO: Menu of id `3` was viewed. [] {"uid":"38cdd1a"}
