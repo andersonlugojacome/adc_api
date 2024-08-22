@@ -25,6 +25,17 @@ class JwtMiddleware
     {
         $path = $request->getUri()->getPath();
 
+        // Permitir solicitudes preflight sin autenticación
+    if ($request->getMethod() === 'OPTIONS') {
+        $response = new \Slim\Psr7\Response();
+        return $response
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+            ->withHeader('Access-Control-Allow-Credentials', 'true')
+            ->withStatus(204);
+    }
+
 
         // Permitir el acceso sin token a las rutas de inicio de sesión y registro
         if ($path === '/login' || $path === '/register' || $path === '/' || $path === '/docs' || $path === '/docs/swagger.json') {
