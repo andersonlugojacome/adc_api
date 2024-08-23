@@ -20,6 +20,7 @@ class JwtMiddleware
     {
         $this->jwtService = $jwtService;
     }
+    
 
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
@@ -35,6 +36,7 @@ class JwtMiddleware
             ->withHeader('Access-Control-Allow-Credentials', 'true')
             ->withStatus(204);
     }
+
 
 
         // Permitir el acceso sin token a las rutas de inicio de sesión y registro

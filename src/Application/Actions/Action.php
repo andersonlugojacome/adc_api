@@ -25,9 +25,7 @@ use Slim\Exception\HttpNotFoundException;
 abstract class Action
 {
     protected LoggerInterface $logger;
-
     protected Request $request;
-
     protected Response $response;
 
     protected array $args;
@@ -93,6 +91,10 @@ abstract class Action
 
     protected function respond(ActionPayload $payload): Response
     {
+        // if(is_array($payload->getErrors()){
+        //     throw new \Exception("Error ", 500, $payload->getErrors())
+        // }
+
         $json = json_encode($payload, JSON_PRETTY_PRINT);
         $this->response->getBody()->write($json);
 
@@ -100,4 +102,7 @@ abstract class Action
                     ->withHeader('Content-Type', 'application/json')
                     ->withStatus($payload->getStatusCode());
     }
+     
+
+
 }
