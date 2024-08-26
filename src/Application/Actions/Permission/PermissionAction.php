@@ -13,12 +13,12 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 abstract class PermissionAction extends Action
 {
-    protected PermissionRepository $permissionRepository;
+    protected PermissionRepository $repository;
 
-    public function __construct(LoggerInterface $logger, PermissionRepository $permissionRepository)
+    public function __construct(LoggerInterface $logger, PermissionRepository $repository)
     {
         parent::__construct($logger);
-        $this->permissionRepository = $permissionRepository;
+        $this->repository = $repository;
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response

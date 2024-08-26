@@ -16,4 +16,13 @@ interface PermissionRepository
     // Puedes agregar otros métodos según sea necesario, como `findPermissionById`, `createPermission`, etc.
     public function findById(int $permissionId): ?array;
 
+     /**
+     * Crea un nuevo usuario.
+     *
+     * @param array $data
+     * @return Permission
+     */
+    public function create(array $data): Permission;
+
+
 }

@@ -18,6 +18,7 @@ use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 use App\Application\Actions\Role\ListRolesAction;
 use App\Application\Actions\Permission\ListPermissionsAction;
+use App\Application\Actions\Permission\CreatePermissionsAction;
 use App\Application\Actions\Menu\ListMenusAction;
 use App\Application\Actions\Menu\ViewMenuAction;
 
@@ -75,7 +76,7 @@ return function (App $app) {
     $app->group('/permissions', function (Group $group) {
         $group->get('', ListPermissionsAction::class);
         // $group->get('/{id}', ViewPermissionAction::class);
-        // $group->post('', CreatePermissionAction::class);
+        $group->post('', CreatePermissionsAction::class);
         // $group->put('/{id}', UpdatePermissionAction::class);
         // $group->delete('/{id}', DeletePermissionAction::class);
     })->add(JwtMiddleware::class);
