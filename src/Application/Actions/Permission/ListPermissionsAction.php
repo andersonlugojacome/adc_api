@@ -10,8 +10,9 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Get(
  *     path="/permissions",
- *    tags={"Permissions"},
+ *     tags={"Permissions"},
  *     summary="List all permissions",
+ *     security={{"bearerAuth": {}}},
  *     @OA\Response(
  *         response=200,
  *         description="List of permissions",
@@ -26,7 +27,7 @@ class ListPermissionsAction extends PermissionAction
      */
     protected function action(): Response
     {
-        $users = $this->permissionRepository->findAll();
+        $users = $this->repository->findAll();
         
         
 
