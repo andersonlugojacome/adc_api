@@ -23,7 +23,18 @@ interface RoleRepository
     public function findById(int $roleId): ?Role;
 
     /**
-     * Crea un nuevo rol.
+     * Encuentra un role_permissions por su ID.
+     *
+     * @param int $id
+     * @return array
+     * @throws RoleNotFoundException
+     */
+    public function findRolePermissionsById(int $id): ?array;
+    
+
+
+    /**
+     * Asigna un permiso a un rol.
      *
      * @param array $data
      * @return Role
@@ -38,5 +49,31 @@ interface RoleRepository
      * @return Role
      */
     public function removePermissionFromRole(int $roleId, int $permissionId): void;
+
+    /**
+     * Crea un nuevo rol.
+     *
+     * @param array $data
+     * @return Role
+     */
+    public function create(array $data): Role;
+
+    /**
+     * Actualiza un rol existente.
+     *
+     * @param int $id
+     * @param array $data
+     * @return Role
+     */
+    public function update(int $id, array $data): ?Role;
+
+
+    /**
+     * Elimina un rol.
+     *
+     * @param int $id
+     * @return void
+     */
+    public function delete(int $id): void;
 
 }

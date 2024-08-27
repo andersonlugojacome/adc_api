@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 declare(strict_types=1);
 
@@ -6,14 +6,22 @@ namespace App\Application\Actions\Permission;
 
 use App\Domain\Permission\Permission;
 use Psr\Http\Message\ResponseInterface as Response;
-use OpenApi\Annotations as OA;
+
+
 /**
- * @OA\Post(
- *     path="/permissions",
- *     summary="Create a new permission",
- *     operationId="createPermission",
+ * @OA\Put(
+ *     path="/permissions/{id}",
  *     tags={"Permissions"},
+ *     summary="Update a permission",
+ *     operationId="updatePermission",
  *     security={{"bearerAuth": {}}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of permission to update",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -23,8 +31,8 @@ use OpenApi\Annotations as OA;
  *         )
  *     ),
  *     @OA\Response(
- *         response=201,
- *         description="Permission created successfully",
+ *         response=200,
+ *         description="Permission updated successfully",
  *         @OA\JsonContent(
  *             @OA\Property(property="id", type="integer"),
  *             @OA\Property(property="name", type="string"),
@@ -44,14 +52,16 @@ use OpenApi\Annotations as OA;
  *     )
  * )
  */
-class CreatePermissionsAction extends PermissionAction
+
+class UpdatePermissionAction extends PermissionAction
 {
     protected function action(): Response
     {
+        $userId = (int) $this->resolveArg('id');
         $data = $this->request->getParsedBody();
-        $result = $this->repository->create($data);
+        $result = $this->repository->update($userId, $data);
 
-        $this->logger->info("Permission was created.");
+        $this->logger->info("Permission of id `{$userId}` was updated.");
 
         return $this->respondWithData($result);
     }

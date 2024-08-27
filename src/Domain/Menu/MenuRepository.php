@@ -16,6 +16,9 @@ interface MenuRepository
 
     // Puedes agregar otros métodos según sea necesario, como `findMenuItemById`, `createMenuItem`, etc.
     public function findAll(): array;
-    public function findById(int $menuItemId): ?array;
+    public function findById(int $menuItemId): ?Menu;
+    public function create(array $data): Menu;
+    public function update(int $menuItemId, array $data): Menu;
+    public function delete(int $menuItemId): void;
 
 }

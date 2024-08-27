@@ -10,10 +10,13 @@ use App\Domain\User\UserNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use OpenApi\Annotations as OA;
+use Slim\Psr7\Message;
 
 class DBUserRepository implements UserRepository
 {
     private Connection $connection;
+    private $nameTable = 'users';
+
 
     public function __construct(Connection $connection)
     {
@@ -25,7 +28,7 @@ class DBUserRepository implements UserRepository
      */
     public function findAll(): array
     {
-        $sql = 'SELECT * FROM users';
+        $sql = 'SELECT * FROM ' . $this->nameTable;
         $stmt = $this->connection->executeQuery($sql);
         $userData = $stmt->fetchAllAssociative();
 
@@ -55,8 +58,8 @@ class DBUserRepository implements UserRepository
     public function createUser(array $data): User
     {
         try {
-            $sql = 'INSERT INTO users (name, lastname, cc, gender, username, email, password, is_active, user_level, usersprivileges_id, is_admin, created_at, last_login)
-                    VALUES (:name, :lastname, :cc, :gender, :username, :email, :password, :is_active, :user_level, :usersprivileges_id, :is_admin, :created_at, :last_login)';
+            $sql = 'INSERT INTO users (name, lastname, cc, gender, username, email, password, is_active, user_level, usersprivileges_id, is_admin, created_at)
+                    VALUES (:name, :lastname, :cc, :gender, :username, :email, :password, :is_active, :user_level, :usersprivileges_id, :is_admin, :created_at)';
             $stmt = $this->connection->prepare($sql);
             $stmt->bindValue('name', $data['name']);
             $stmt->bindValue('lastname', $data['lastname']);
@@ -67,11 +70,10 @@ class DBUserRepository implements UserRepository
             //Pass es MD5 porque asi lo pide el enunciado
             $stmt->bindValue('password', sha1(md5($data['password'])));
             $stmt->bindValue('is_active', $data['is_active']);
-            $stmt->bindValue('user_level', $data['user_level']);
-            $stmt->bindValue('usersprivileges_id', $data['usersprivileges_id']);
+            $stmt->bindValue('user_level', 0);
+            $stmt->bindValue('usersprivileges_id', 0);
             $stmt->bindValue('is_admin', $data['is_admin']);
             $stmt->bindValue('created_at', $data['created_at']);
-            $stmt->bindValue('last_login', $data['last_login']);
             $stmt->executeQuery();
 
             return $this->findUserByUsername($data['username']);
@@ -86,9 +88,15 @@ class DBUserRepository implements UserRepository
     public function updateUser(int $id, array $data): ?User
     {
         try {
-            $sql = 'UPDATE users SET name = :name, lastname = :lastname, cc = :cc, gender = :gender, username = :username, email = :email, password = :password, 
-                    is_active = :is_active, user_level = :user_level, usersprivileges_id = :usersprivileges_id, is_admin = :is_admin, created_at = :created_at, 
-                    last_login = :last_login WHERE id = :id';
+            $sql = 'UPDATE ' . $this->nameTable . ' SET name = :name, lastname = :lastname, cc = :cc, gender = :gender, username = :username, email = :email,  
+                    is_active = :is_active, user_level = :user_level, usersprivileges_id = :usersprivileges_id, is_admin = :is_admin';
+                    
+                    
+                    
+            if (!empty($data['password'])) {
+                $sql .= ', password = :password';
+            }
+            $sql .= ' WHERE id = :id';
             $stmt = $this->connection->prepare($sql);
             $stmt->bindValue('name', $data['name']);
             $stmt->bindValue('lastname', $data['lastname']);
@@ -101,16 +109,14 @@ class DBUserRepository implements UserRepository
                 $stmt->bindValue('password', sha1(md5($data['password'])));
             }
             $stmt->bindValue('is_active', $data['is_active']);
-            $stmt->bindValue('user_level', $data['user_level']);
-            $stmt->bindValue('usersprivileges_id', $data['usersprivileges_id']);
-            $stmt->bindValue('is_admin', $data['is_admin']);
-            $stmt->bindValue('created_at', $data['created_at']);
-            $stmt->bindValue('last_login', $data['last_login']);
+            $stmt->bindValue('user_level', 0);
+            $stmt->bindValue('usersprivileges_id', 0);
+            $stmt->bindValue('is_admin', 0);
             $stmt->bindValue('id', $id);
             $stmt->executeQuery();
             return $this->findUserOfId($id);
         } catch (\Exception $e) {
-            throw new \RuntimeException('Error al actualizar el usuario', 0, $e);
+            throw new \RuntimeException('Error al actualizar el usuario ' . $e->getMessage() . ' ' . $e->getLine(), 0, $e);
         }
     }
 

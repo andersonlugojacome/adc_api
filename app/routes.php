@@ -17,10 +17,21 @@ use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 
 use App\Application\Actions\Role\ListRolesAction;
+use App\Application\Actions\Role\CreateRoleAction;
+use App\Application\Actions\Role\UpdateRoleAction;
+use App\Application\Actions\Role\FindRolePermissionsByIdAction;
+use App\Application\Actions\Role\AssignPermissionToRoleAction;
+use App\Application\Actions\Role\RemovePermissionFromRoleAction;
+
+
 use App\Application\Actions\Permission\ListPermissionsAction;
-use App\Application\Actions\Permission\CreatePermissionsAction;
+use App\Application\Actions\Permission\CreatePermissionAction;
+use App\Application\Actions\Permission\UpdatePermissionAction;
 use App\Application\Actions\Menu\ListMenusAction;
 use App\Application\Actions\Menu\ViewMenuAction;
+use App\Application\Actions\Menu\CreateMenuAction;
+use App\Application\Actions\Menu\UpdateMenuAction;
+
 
 use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesAction;
 use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesByDateAction;
@@ -67,8 +78,11 @@ return function (App $app) {
     $app->group('/roles', function (Group $group) {
         $group->get('', ListRolesAction::class);
         // $group->get('/{id}', ViewRoleAction::class);
-        // $group->post('', CreateRoleAction::class);
-        // $group->put('/{id}', UpdateRoleAction::class);
+         $group->post('', CreateRoleAction::class);
+         $group->put('/{id}', UpdateRoleAction::class);
+         $group->get('/{id}/permissions', FindRolePermissionsByIdAction::class);
+         $group->post('/{id}/permissions', AssignPermissionToRoleAction::class);
+         $group->delete('/{id}/permissions/{permissionId}', RemovePermissionFromRoleAction::class);
         // $group->delete('/{id}', DeleteRoleAction::class);
     })->add(JwtMiddleware::class);
 
@@ -76,8 +90,8 @@ return function (App $app) {
     $app->group('/permissions', function (Group $group) {
         $group->get('', ListPermissionsAction::class);
         // $group->get('/{id}', ViewPermissionAction::class);
-        $group->post('', CreatePermissionsAction::class);
-        // $group->put('/{id}', UpdatePermissionAction::class);
+        $group->post('', CreatePermissionAction::class);
+        $group->put('/{id}', UpdatePermissionAction::class);
         // $group->delete('/{id}', DeletePermissionAction::class);
     })->add(JwtMiddleware::class);
 
@@ -85,8 +99,8 @@ return function (App $app) {
     $app->group('/menus', function (Group $group) {
         $group->get('', ListMenusAction::class);
         $group->get('/{id}', ViewMenuAction::class);
-        // $group->post('', CreateMenuAction::class);
-        // $group->put('/{id}', UpdateMenuAction::class);
+        $group->post('', CreateMenuAction::class);
+        $group->put('/{id}', UpdateMenuAction::class);
         // $group->delete('/{id}', DeleteMenuAction::class);
     })->add(JwtMiddleware::class);
 
