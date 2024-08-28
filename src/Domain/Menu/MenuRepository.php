@@ -20,5 +20,10 @@ interface MenuRepository
     public function create(array $data): Menu;
     public function update(int $menuItemId, array $data): Menu;
     public function delete(int $menuItemId): void;
+    // assign and remove menu_permissions 
+    public function assignMenuPermission(int $menuItemId, int $permissionId): void;
+    public function removeMenuPermission(int $menuItemId, int $permissionId): void;
+    public function hasMenuPermission(int $menuItemId, int $permissionId): bool;
+    public function findPermissionsByMenuItemsId(int $menuItemId): array;
 
 }

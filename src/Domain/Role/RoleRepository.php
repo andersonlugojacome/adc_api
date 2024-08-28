@@ -30,6 +30,14 @@ interface RoleRepository
      * @throws RoleNotFoundException
      */
     public function findRolePermissionsById(int $id): ?array;
+
+    /**
+     * Encuentra los roles de un usuario.
+     *
+     * @param int $userId
+     * @return Role[]
+     */
+    public function findRolesByUserId(int $userId): array;
     
 
 
@@ -75,5 +83,24 @@ interface RoleRepository
      * @return void
      */
     public function delete(int $id): void;
+
+    /**
+     * Asigna un rol a un user en user_roles.
+     *
+     * @param int $userId
+     * @param int $roleId
+     * @return void
+     */
+    public function assignRoleToUser(int $userId, int $roleId): void;
+
+    /**
+     * Remove un rol a un user en user_roles.
+     *
+     * @param int $userId
+     * @param int $roleId
+     * @return void
+     */
+    public function removeRoleFromUser(int $userId, int $roleId): void;
+
 
 }

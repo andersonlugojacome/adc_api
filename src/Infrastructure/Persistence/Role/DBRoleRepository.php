@@ -46,14 +46,81 @@ class DBRoleRepository implements RoleRepository
     }
     /**
      * {@inheritdoc}
+     */
+    public function findRolesByUserId(int $userId): array
+    {
+        try {
+            $sql = 'SELECT r.* FROM roles r
+                JOIN user_roles ur ON r.id = ur.role_id
+                WHERE ur.user_id = :user_id';
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindValue('user_id', $userId);
+            $result = $stmt->executeQuery();
+            $rolesData = $result->fetchAllAssociative();
+
+            $roles = [];
+            foreach ($rolesData as $roleData) {
+                $roles[] = $this->mapToRole($roleData);
+            }
+
+            return $roles;
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Error al obtener los roles del usuario', 0, $e);
+        }
+    }
+
+
+    // Create a function evaluate if exit a user_roles
+    public function existUserRole(int $userId, int $roleId): bool
+    {
+        $sql = 'SELECT COUNT(*) AS count FROM user_roles WHERE user_id = :user_id AND role_id = :role_id';
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('user_id', $userId);
+        $stmt->bindValue('role_id', $roleId);
+        $result = $stmt->executeQuery();
+        $count = $result->fetchAssociative()['count'];
+        return $count > 0;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function assignRoleToUser(int $userId, int $roleId): void
+    {
+        if ($this->existUserRole($userId, $roleId)) {
+            return;
+        }
+
+        $sql = 'INSERT INTO user_roles (user_id, role_id) VALUES (:user_id, :role_id)';
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('user_id', $userId);
+        $stmt->bindValue('role_id', $roleId);
+        $stmt->executeQuery();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeRoleFromUser(int $userId, int $roleId): void
+    {
+        $sql = 'DELETE FROM user_roles WHERE user_id = :user_id AND role_id = :role_id';
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('user_id', $userId);
+        $stmt->bindValue('role_id', $roleId);
+        $stmt->executeQuery();
+    }
+
+
+    /**
+     * {@inheritdoc}
      * findRolePermissionsById
      * 
      */
-
     public function findRolePermissionsById(int $id): ?array
     {
         try {
-            $sql = 'SELECT r.*, p.name as permission_name FROM roles r
+            $sql = 'SELECT r.*, p.name as permission_name, p.id as permission_id FROM roles r
             JOIN role_permissions rp ON r.id = rp.role_id
             JOIN permissions p ON rp.permission_id = p.id
             WHERE r.id = :id';
@@ -66,24 +133,26 @@ class DBRoleRepository implements RoleRepository
             throw new RoleNotFoundException();
         }
     }
-
-
-
-
+    // Create a function evaluate if exit a role_persmissions
+    public function existRolePermission(int $roleId, int $permissionId): bool
+    {
+        $sql = 'SELECT COUNT(*) AS count FROM role_permissions WHERE role_id = :role_id AND permission_id = :permission_id';
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('role_id', $roleId);
+        $stmt->bindValue('permission_id', $permissionId);
+        $result = $stmt->executeQuery();
+        $count = $result->fetchAssociative()['count'];
+        return $count > 0;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function assignPermissionToRole(int $roleId, int $permissionId): void
     {
-
-        // // busco el permissionId ya que permissionId viene es el nombre del permiso
-        // $sql = 'SELECT id FROM permissions WHERE name = :name';
-        // $stmt = $this->connection->prepare($sql);
-        // $stmt->bindValue('name', $permissionId);
-        // $result = $stmt->executeQuery();
-        // $permissionId = $result->fetchAssociative()['id'];
-
+        if ($this->existRolePermission($roleId, $permissionId)) {
+            return;
+        }
 
         $sql = 'INSERT INTO role_permissions (role_id, permission_id) VALUES (:role_id, :permission_id)';
         $stmt = $this->connection->prepare($sql);
@@ -96,17 +165,6 @@ class DBRoleRepository implements RoleRepository
      */
     public function removePermissionFromRole(int $roleId, int $permissionId): void
     {
-
-        // // busco el id del permiso ya que permissionId viene es el nombre del permiso
-        // $sql = 'SELECT id FROM permissions WHERE name = :name';
-        // $stmt = $this->connection->prepare($sql);
-        // $stmt->bindValue('name', $permissionId);
-        // $result = $stmt->executeQuery();
-        // $permissionId = $result->fetchAssociative()['id'];
-
-
-
-
         $sql = 'DELETE FROM role_permissions WHERE role_id = :role_id AND permission_id = :permission_id';
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('role_id', $roleId);

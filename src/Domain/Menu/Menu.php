@@ -39,6 +39,7 @@ class Menu implements JsonSerializable
     private ?int $parent_id;
     private int $sort_order;
     private string $status;
+    private string $icon;
     private string $created_at;
     private string $updated_at;
 
@@ -49,6 +50,7 @@ class Menu implements JsonSerializable
         ?int $parent_id,
         int $sort_order,
         string $status,
+        string $icon,
         string $created_at,
         string $updated_at
     ) {
@@ -58,6 +60,7 @@ class Menu implements JsonSerializable
         $this->parent_id = $parent_id;
         $this->sort_order = $sort_order;
         $this->status = $status;
+        $this->icon = $icon;
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
     }
@@ -92,6 +95,12 @@ class Menu implements JsonSerializable
         return $this->status;
     }
 
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+
     public function getCreatedAt(): string
     {
         return $this->created_at;
@@ -111,6 +120,7 @@ class Menu implements JsonSerializable
             'parent_id' => $this->parent_id,
             'sort_order' => $this->sort_order,
             'status' => $this->status,
+            'icon' => $this->icon,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

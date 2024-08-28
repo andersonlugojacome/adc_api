@@ -57,11 +57,11 @@ class UpdatePermissionAction extends PermissionAction
 {
     protected function action(): Response
     {
-        $userId = (int) $this->resolveArg('id');
+        $id = (int) $this->resolveArg('id');
         $data = $this->request->getParsedBody();
-        $result = $this->repository->update($userId, $data);
+        $result = $this->repository->update($id, $data);
 
-        $this->logger->info("Permission of id `{$userId}` was updated.");
+        $this->logger->info("Permission of id `{$id}` was updated.");
 
         return $this->respondWithData($result);
     }

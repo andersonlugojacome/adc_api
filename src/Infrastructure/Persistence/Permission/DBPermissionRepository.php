@@ -74,8 +74,8 @@ class DBPermissionRepository implements PermissionRepository
     public function update(int $id, array $data): ?Permission
     {
         try {
-            $sql = 'UPDATE ' . $this->nameTable . ' SET name = :name, description = :description, status = :status,
-                    ¡WHERE id = :id';
+            $sql = 'UPDATE ' . $this->nameTable . ' SET name = :name, description = :description, status = :status
+                    WHERE id = :id';
             $stmt = $this->connection->prepare($sql);
             $stmt->bindValue('name', $data['name']);
             $stmt->bindValue('description', $data['description']);

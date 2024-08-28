@@ -22,6 +22,11 @@ use App\Application\Actions\Role\UpdateRoleAction;
 use App\Application\Actions\Role\FindRolePermissionsByIdAction;
 use App\Application\Actions\Role\AssignPermissionToRoleAction;
 use App\Application\Actions\Role\RemovePermissionFromRoleAction;
+use App\Application\Actions\Role\FindRolesByUserIdAction;
+use App\Application\Actions\Role\AssignRoleToUserAction;
+use App\Application\Actions\Role\RemoveRoleFromUser;
+
+
 
 
 use App\Application\Actions\Permission\ListPermissionsAction;
@@ -31,6 +36,9 @@ use App\Application\Actions\Menu\ListMenusAction;
 use App\Application\Actions\Menu\ViewMenuAction;
 use App\Application\Actions\Menu\CreateMenuAction;
 use App\Application\Actions\Menu\UpdateMenuAction;
+use App\Application\Actions\Menu\AssignMenuPermissionAction;
+use App\Application\Actions\Menu\RemoveMenuPermissionAction;
+use App\Application\Actions\Menu\FindPermissionsByMenuItemsIdAction;
 
 
 use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesAction;
@@ -72,6 +80,10 @@ return function (App $app) {
         $group->get('/{id}', ViewUserAction::class);
         $group->post('', CreateUserAction::class);
         $group->put('/{id}', UpdateUserAction::class);
+        $group->get('/{id}/roles', FindRolesByUserIdAction::class);
+        $group->post('/{id}/roles', AssignRoleToUserAction::class);
+        $group->delete('/{id}/roles', RemoveRoleFromUser::class);
+        
     })->add(JwtMiddleware::class);
 
     // add /roles 
@@ -102,6 +114,9 @@ return function (App $app) {
         $group->post('', CreateMenuAction::class);
         $group->put('/{id}', UpdateMenuAction::class);
         // $group->delete('/{id}', DeleteMenuAction::class);
+        $group->post('/{id}/permissions', AssignMenuPermissionAction::class);
+        $group->delete('/{id}/permissions/{permissionId}', RemoveMenuPermissionAction::class);
+        $group->get('/{id}/permissions', FindPermissionsByMenuItemsIdAction::class);
     })->add(JwtMiddleware::class);
 
     $app->group('/certificate-consecutives', function (Group $group) {
