@@ -41,8 +41,15 @@ use App\Application\Actions\Menu\RemoveMenuPermissionAction;
 use App\Application\Actions\Menu\FindPermissionsByMenuItemsIdAction;
 
 
+
 use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesAction;
 use App\Application\Actions\CertificateConsecutives\ListCertificateConsecutivesByDateAction;
+use App\Application\Actions\CertificateConsecutives\CreateCertificateConsecutivesAction;
+use App\Application\Actions\CertificateConsecutives\UpdateCertificateConsecutivesAction;
+use App\Application\Actions\CertificateConsecutives\NextConsecutiveAction;
+use App\Application\Actions\CertificateConsecutives\CheckConsecutiveAction;
+use App\Application\Actions\CertificateConsecutives\CheckNroescriturapublicaAction;
+
 
 use App\Application\Actions\RemissionConsecutives\ListRemissionConsecutivesAction;
 use App\Application\Actions\RemissionConsecutives\ListRemissionConsecutivesByDateAction;
@@ -123,7 +130,10 @@ return function (App $app) {
         $group->get('', ListCertificateConsecutivesAction::class);
         $group->get('/{begingDate}/{endDate}', ListCertificateConsecutivesByDateAction::class);
         // $group->get('/{id}', ViewCertificateConsecutivesAction::class);
-        // $group->post('', CreateCertificateConsecutivesAction::class);
+        $group->post('', CreateCertificateConsecutivesAction::class);
+        $group->get('/next-consecutive', NextConsecutiveAction::class);
+        $group->post('/check-consecutive', CheckConsecutiveAction::class);
+        $group->get('/check-nroescritura/{nroescriturapublica}/{dateescritura}', CheckNroescriturapublicaAction::class);
         // $group->put('/{id}', UpdateCertificateConsecutivesAction::class);
         // $group->delete('/{id}', DeleteCertificateConsecutivesAction::class);
     })->add(JwtMiddleware::class);

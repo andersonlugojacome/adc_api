@@ -71,7 +71,7 @@ class DBMenuRepository implements MenuRepository
      */
     public function findById(int $menuItemId): ?Menu
     {
-        try {
+        // try {
             //code...
             $sql = 'SELECT * FROM ' . $this->nameTable . ' WHERE id = :id';
             $stmt = $this->connection->prepare($sql);
@@ -79,9 +79,9 @@ class DBMenuRepository implements MenuRepository
             $result = $stmt->executeQuery();
             $data = $result->fetchAssociative();
             return $data ? $this->mapTo($data) : null;
-        } catch (\Throwable $th) {
-            throw new MenuNotFoundException();
-        }
+        // } catch (\Throwable $th) {
+        //     throw new MenuNotFoundException();
+        // }
     }
 
     /**
@@ -117,7 +117,7 @@ class DBMenuRepository implements MenuRepository
         $stmt->bindValue('parent_id', $data['parent_id'] ?? null);
         $stmt->bindValue('sort_order', $data['sort_order'] ?? 0);
         $stmt->bindValue('status', $data['status'] ?? 'visible');
-        $stmt->bindValue('icon', $data['icon'] ?? null);
+        $stmt->bindValue('icon', empty($data['icon'] || $data['icon'] === null ) ? '' : $data['icon']);
         $stmt->executeQuery();
 
         $data['id'] = $menuItemId;

@@ -61,4 +61,34 @@ interface CertificateConsecutivesRepository
      * @throws CertificateConsecutivesNotFoundException
      */
     public function findByConsecutivo(string $consecutivo):? CertificateConsecutives;
+
+    //nextConsecutive
+    /**
+     * Encuentra el siguiente consecutivo de certificado.
+     *
+     * @return int
+     */
+    public function nextConsecutive(): int;
+
+    //check-consecutives
+    /**
+     * Verifica si el consecutivo y dateescrituraya existe para ese año
+     *
+     * @param string $consecutivo
+     * @return bool
+     */
+    public function checkConsecutive(int $consecutivo, string $dateescritura): bool;
+
+    //check-nroescriturapublica and dateescritura
+    /**
+     * Verifica si el nroescriturapublica y dateescrituraya existe para ese año
+     *
+     * @param string $nroescriturapublica
+     * @return CertificateConsecutives
+     * @throws CertificateConsecutivesNotFoundException
+     */
+    public function checkNroescriturapublica(int $nroescriturapublica, string $dateescritura): ?CertificateConsecutives;
+
+ 
+
 }
