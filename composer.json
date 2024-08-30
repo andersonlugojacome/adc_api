@@ -62,7 +62,23 @@
     },
     "scripts": {
         "start": "php -S localhost:8080 -t public",
-        "test": "phpunit"
+        "test": "phpunit",
+        "build": [
+            "rm -rf build",
+            "mkdir build",
+            "cp -r public build/",
+            "cp -r vendor build/",
+            "cp -r app build/",
+            "cp -r src build/",
+            "cp -r logs build/",
+            "cp -r vendor build/",
+            "cp composer.json build/",
+            "cp -r .env build/",
+            "composer install --no-dev --optimize-autoloader --working-dir=build",
+            "find build -type d -exec chmod 755 {} +",
+            "find build -type f -exec chmod 644 {} +",
+            "cd build && zip -r ../build.zip . && cd .."
+        ]
     }, 
     "prefer-stable": true,
     "minimum-stability": "dev",

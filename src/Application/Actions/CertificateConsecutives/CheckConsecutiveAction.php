@@ -42,7 +42,9 @@ class CheckConsecutiveAction extends CertificateConsecutivesAction
         $data = $this->getFormData();
         $consecutivo = $data['consecutivo'];
         $dateescritura = $data['dateescritura'];
-        $exists = $this->repository->checkConsecutive($consecutivo, $dateescritura);
+        $nroescriturapublica = $data['nroescriturapublica'];
+
+        $exists = $this->repository->checkConsecutive($consecutivo, $nroescriturapublica, $dateescritura);
 
         $this->logger->info("CertificateConsecutive of id `{$consecutivo}` was checked.");
 

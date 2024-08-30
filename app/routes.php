@@ -133,7 +133,7 @@ return function (App $app) {
         $group->post('', CreateCertificateConsecutivesAction::class);
         $group->get('/next-consecutive', NextConsecutiveAction::class);
         $group->post('/check-consecutive', CheckConsecutiveAction::class);
-        $group->get('/check-nroescritura/{nroescriturapublica}/{dateescritura}', CheckNroescriturapublicaAction::class);
+        //$group->get('/check-nroescritura/{nroescriturapublica}/{dateescritura}', CheckNroescriturapublicaAction::class);
         // $group->put('/{id}', UpdateCertificateConsecutivesAction::class);
         // $group->delete('/{id}', DeleteCertificateConsecutivesAction::class);
     })->add(JwtMiddleware::class);

@@ -65,8 +65,8 @@ class DBCertificateConsecutivesRepository implements CertificateConsecutivesRepo
             $stmt = $this->connection->prepare($sql);
             $stmt->bindValue('id', $id);
             $result = $stmt->executeQuery();
-            $userData = $result->fetchAssociative();
-            return $userData ? $this->mapToCertificateConsecutives($userData) : null;
+            $data = $result->fetchAssociative();
+            return $data ? $this->mapToCertificateConsecutives($data) : null;
         } catch (\Exception $e) {
             throw new CertificateConsecutivesNotFoundException();
         }
@@ -86,11 +86,13 @@ class DBCertificateConsecutivesRepository implements CertificateConsecutivesRepo
             $stmt->bindValue('dateescritura', $data['dateescritura']);
             $stmt->bindValue('user_id', $data['user_id']);
             $stmt->bindValue('created_at', date('Y-m-d H:i:s'));
+    
             $stmt->executeQuery();
-            $data['id'] = $this->connection->lastInsertId();
-            return $this->mapToCertificateConsecutives($data);
+            $id = (int) $this->connection->lastInsertId();
+
+            return $this->findOfId($id);
         } catch (\Exception $e) {
-            throwException(new Exception($e->getMessage()));
+            throw new \RuntimeException($e->getMessage(), 0, $e);
             // throw new CertificateConsecutivesNotFoundException();
         }
     }
@@ -168,40 +170,39 @@ class DBCertificateConsecutivesRepository implements CertificateConsecutivesRepo
     /**
      * {@inheritdoc}
      */
-    public function checkConsecutive(int $consecutivo, string $dateescritura): bool
+    public function checkConsecutive(int $consecutivo, int $nroescriturapublica, string $dateescritura): array
     {
         try {
-            $sql = 'SELECT * FROM consecutivosdecertificados  WHERE consecutivo = :consecutivo AND YEAR(created_at) = YEAR(:dateescritura)';
+            $sql = 'SELECT * FROM consecutivosdecertificados WHERE (consecutivo = :consecutivo OR nroescriturapublica = :nroescriturapublica) AND YEAR(created_at) = YEAR(:dateescritura)';
             $stmt = $this->connection->prepare($sql);
             $stmt->bindValue('consecutivo', $consecutivo);
-            $stmt->bindValue('dateescritura', $dateescritura);
-            $result = $stmt->executeQuery();
-            $userData = $result->fetchAssociative();
-            return $userData ? true : false;
-        } catch (\Exception $e) {
-            throw new Exception($e->getMessage() . ' q: ' . $sql . ' ' . $dateescritura);
-
-            // throw new CertificateConsecutivesNotFoundException();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function checkNroescriturapublica(int $nroescriturapublica, string $dateescritura): ?CertificateConsecutives
-    {
-        try {
-            $sql = 'SELECT * FROM consecutivosdecertificados  WHERE nroescriturapublica = :nroescriturapublica AND YEAR(created_at) = YEAR(:dateescritura)';
-            $stmt = $this->connection->prepare($sql);
             $stmt->bindValue('nroescriturapublica', $nroescriturapublica);
             $stmt->bindValue('dateescritura', $dateescritura);
             $result = $stmt->executeQuery();
-            $data = $result->fetchAssociative();
-            return $data ? $this->mapToCertificateConsecutives($data) : null;
+            $data = $result->fetchAllAssociative();
+            return $data;
         } catch (\Exception $e) {
-            throw new CertificateConsecutivesNotFoundException();
+            throw new \RuntimeException('Error al verificar el consecutivo: ' . $e->getMessage(), 0, $e);
         }
     }
+
+    // /**
+    //  * {@inheritdoc}
+    //  */
+    // public function checkNroescriturapublica(int $nroescriturapublica, string $dateescritura): ?CertificateConsecutives
+    // {
+    //     try {
+    //         $sql = 'SELECT * FROM consecutivosdecertificados  WHERE nroescriturapublica = :nroescriturapublica AND YEAR(created_at) = YEAR(:dateescritura)';
+    //         $stmt = $this->connection->prepare($sql);
+    //         $stmt->bindValue('nroescriturapublica', $nroescriturapublica);
+    //         $stmt->bindValue('dateescritura', $dateescritura);
+    //         $result = $stmt->executeQuery();
+    //         $data = $result->fetchAssociative();
+    //         return $data ? $this->mapToCertificateConsecutives($data) : null;
+    //     } catch (\Exception $e) {
+    //         throw new CertificateConsecutivesNotFoundException();
+    //     }
+    // }
 
 
 
