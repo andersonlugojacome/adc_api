@@ -15,6 +15,8 @@ use App\Domain\CertificateConsecutives\CertificateConsecutivesRepository as ICer
 use App\Infrastructure\Persistence\CertificateConsecutives\DBCertificateConsecutivesRepository;
 use App\Domain\RemissionConsecutives\RemissionConsecutivesRepository as IRemissionConsecutivesRepository;
 use App\Infrastructure\Persistence\RemissionConsecutives\DBRemissionConsecutivesRepository;
+use App\Domain\PrintedStickers\PrintedStickersRepository as IPrintedStickersRepository;
+use App\Infrastructure\Persistence\PrintedStickers\DBPrintedStickersRepository;
 
 
 
@@ -42,6 +44,9 @@ return function (ContainerBuilder $containerBuilder) {
         },
         IRemissionConsecutivesRepository::class => function ($c) {
             return new DBRemissionConsecutivesRepository($c->get('db'));
+        },
+        IPrintedStickersRepository::class => function ($c) {
+            return new DBPrintedStickersRepository($c->get('db'));
         },
         
        

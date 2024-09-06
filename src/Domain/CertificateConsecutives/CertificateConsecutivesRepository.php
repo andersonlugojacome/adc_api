@@ -79,16 +79,5 @@ interface CertificateConsecutivesRepository
      */
     public function checkConsecutive(int $consecutivo, int $nroescriturapublica, string $dateescritura): array;
 
-    // //check-nroescriturapublica and dateescritura
-    // /**
-    //  * Verifica si el nroescriturapublica y dateescrituraya existe para ese año
-    //  *
-    //  * @param string $nroescriturapublica
-    //  * @return CertificateConsecutives
-    //  * @throws CertificateConsecutivesNotFoundException
-    //  */
-    // public function checkNroescriturapublica(int $nroescriturapublica, string $dateescritura): ?CertificateConsecutives;
-
- 
 
 }

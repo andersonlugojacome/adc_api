@@ -48,13 +48,30 @@ use App\Application\Actions\CertificateConsecutives\CreateCertificateConsecutive
 use App\Application\Actions\CertificateConsecutives\UpdateCertificateConsecutivesAction;
 use App\Application\Actions\CertificateConsecutives\NextConsecutiveAction;
 use App\Application\Actions\CertificateConsecutives\CheckConsecutiveAction;
-use App\Application\Actions\CertificateConsecutives\CheckNroescriturapublicaAction;
 
 
 use App\Application\Actions\RemissionConsecutives\ListRemissionConsecutivesAction;
 use App\Application\Actions\RemissionConsecutives\ListRemissionConsecutivesByDateAction;
 use App\Application\Actions\RemissionConsecutives\CreateRemissionConsecutivesAction;
 use App\Application\Actions\RemissionConsecutives\UpdateRemissionConsecutivesAction;
+use App\Application\Actions\RemissionConsecutives\NextRemissionConsecutivesAction;
+use App\Application\Actions\RemissionConsecutives\CheckRemissionConsecutivesAction;
+
+
+use App\Application\Actions\SoapSIGNO\ObtenerFirmasRegistradasAction;
+use App\Application\Actions\SoapSIGNO\ObtenerEscriturasAction;
+
+use App\Application\Actions\PrintedStickers\ListPrintedStickersAction;
+use App\Application\Actions\PrintedStickers\ViewPrintedStickerAction;
+use App\Application\Actions\PrintedStickers\CreatePrintedStickerAction;
+use App\Application\Actions\PrintedStickers\ViewByCodigocryptoAction;
+
+
+
+
+
+
+
 
 
 return function (App $app) {
@@ -81,6 +98,7 @@ return function (App $app) {
 
     // Ruta de autenticación
     $app->post('/login', LoginAction::class);
+    $app->get('/printed-stickers/codigocrypto/{codigocrypto}', ViewByCodigocryptoAction::class);
 
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
@@ -90,18 +108,17 @@ return function (App $app) {
         $group->get('/{id}/roles', FindRolesByUserIdAction::class);
         $group->post('/{id}/roles', AssignRoleToUserAction::class);
         $group->delete('/{id}/roles', RemoveRoleFromUser::class);
-        
     })->add(JwtMiddleware::class);
 
     // add /roles 
     $app->group('/roles', function (Group $group) {
         $group->get('', ListRolesAction::class);
         // $group->get('/{id}', ViewRoleAction::class);
-         $group->post('', CreateRoleAction::class);
-         $group->put('/{id}', UpdateRoleAction::class);
-         $group->get('/{id}/permissions', FindRolePermissionsByIdAction::class);
-         $group->post('/{id}/permissions', AssignPermissionToRoleAction::class);
-         $group->delete('/{id}/permissions/{permissionId}', RemovePermissionFromRoleAction::class);
+        $group->post('', CreateRoleAction::class);
+        $group->put('/{id}', UpdateRoleAction::class);
+        $group->get('/{id}/permissions', FindRolePermissionsByIdAction::class);
+        $group->post('/{id}/permissions', AssignPermissionToRoleAction::class);
+        $group->delete('/{id}/permissions/{permissionId}', RemovePermissionFromRoleAction::class);
         // $group->delete('/{id}', DeleteRoleAction::class);
     })->add(JwtMiddleware::class);
 
@@ -134,7 +151,7 @@ return function (App $app) {
         $group->get('/next-consecutive', NextConsecutiveAction::class);
         $group->post('/check-consecutive', CheckConsecutiveAction::class);
         //$group->get('/check-nroescritura/{nroescriturapublica}/{dateescritura}', CheckNroescriturapublicaAction::class);
-        // $group->put('/{id}', UpdateCertificateConsecutivesAction::class);
+        $group->put('/{id}', UpdateCertificateConsecutivesAction::class);
         // $group->delete('/{id}', DeleteCertificateConsecutivesAction::class);
     })->add(JwtMiddleware::class);
 
@@ -142,8 +159,24 @@ return function (App $app) {
         $group->get('', ListRemissionConsecutivesAction::class);
         $group->get('/{begingDate}/{endDate}', ListRemissionConsecutivesByDateAction::class);
         // $group->get('/{id}', ViewRemissionConsecutivesAction::class);
+        $group->get('/next-consecutive', NextRemissionConsecutivesAction::class);
+        $group->post('/check-consecutive', CheckRemissionConsecutivesAction::class);
         $group->post('', CreateRemissionConsecutivesAction::class);
         $group->put('/{id}', UpdateRemissionConsecutivesAction::class);
         // $group->delete('/{id}', DeleteRemissionConsecutivesAction::class);
     })->add(JwtMiddleware::class);
+    $app->group('/soap-signo', function (Group $group) {
+        $group->get('/consultar-firmas-registradas', ObtenerFirmasRegistradasAction::class);
+        $group->get('/consultar-radicados', ObtenerEscriturasAction::class);
+    })->add(JwtMiddleware::class);
+
+    $app->group('/printed-stickers', function (Group $group) {
+        $group->get('', ListPrintedStickersAction::class);
+        $group->get('/{id}', ViewPrintedStickerAction::class);
+        $group->post('', CreatePrintedStickerAction::class);
+        
+    })->add(JwtMiddleware::class);
+
+    
+
 };

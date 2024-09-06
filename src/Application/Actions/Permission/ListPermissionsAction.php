@@ -28,9 +28,6 @@ class ListPermissionsAction extends PermissionAction
     protected function action(): Response
     {
         $users = $this->repository->findAll();
-        
-        
-
         $this->logger->info("Permissions list was viewed.");
 
         return $this->respondWithData($users);

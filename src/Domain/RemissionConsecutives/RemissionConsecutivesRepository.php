@@ -61,4 +61,22 @@ interface RemissionConsecutivesRepository
      * @throws RemissionConsecutivesNotFoundException
      */
     public function findByConsecutivo(string $consecutivo):? RemissionConsecutives;
+
+    //nextConsecutive
+    /**
+     * Encuentra el siguiente consecutivo de certificado.
+     *
+     * @return int
+     */
+    public function nextConsecutive(): int;
+
+    //check-consecutives
+    /**
+     * Verifica si el consecutivo y dateescrituraya existe para ese año
+     *
+     * @param string $consecutivo
+     * @return bool
+     */
+    public function checkConsecutive(int $consecutivo, int $nroescriturapublica, string $dateescritura): array;
+
 }

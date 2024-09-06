@@ -13,6 +13,9 @@ use Psr\Log\LoggerInterface;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
 use App\Application\Services\JWTService;
+use App\Application\Services\SOAPService;
+
+
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
@@ -57,7 +60,7 @@ return function (ContainerBuilder $containerBuilder) {
             },
             
         'openapi' => require __DIR__ . '/swagger.php',
-        
+       
 
 
     ]);

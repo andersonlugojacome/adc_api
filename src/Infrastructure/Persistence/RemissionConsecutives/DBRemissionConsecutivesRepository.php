@@ -64,8 +64,8 @@ class DBRemissionConsecutivesRepository implements RemissionConsecutivesReposito
             $stmt = $this->connection->prepare($sql);
             $stmt->bindValue('id', $id);
             $result = $stmt->executeQuery();
-            $userData = $result->fetchAssociative();
-            return $userData ? $this->mapToRemissionConsecutives($userData) : null;
+            $data = $result->fetchAssociative();
+            return $data ? $this->mapToRemissionConsecutives($data) : null;
         } catch (\Exception $e) {
             throw new RemissionConsecutivesNotFoundException();
         }
@@ -149,6 +149,42 @@ class DBRemissionConsecutivesRepository implements RemissionConsecutivesReposito
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function nextConsecutive(): int
+    {
+        try {
+            // busco el ultimo consecutivo del año actual en la DB
+            $sql = 'SELECT MAX(consecutivo) as consecutivo FROM '. $this->table.' where YEAR(created_at) = YEAR(CURDATE())';
+            $stmt = $this->connection->prepare($sql);
+            $result = $stmt->executeQuery();
+            $data = $result->fetchAssociative();
+            return (int) $data['consecutivo'] + 1;
+        } catch (\Exception $e) {
+            throw new RemissionConsecutivesNotFoundException();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkConsecutive(int $consecutivo, int $nroescriturapublica, string $dateescritura): array
+    {
+        try {
+            $sql = 'SELECT * FROM '. $this->table.' WHERE (consecutivo = :consecutivo OR nroescriturapublica = :nroescriturapublica) AND YEAR(created_at) = YEAR(:dateescritura)';
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindValue('consecutivo', $consecutivo);
+            $stmt->bindValue('nroescriturapublica', $nroescriturapublica);
+            $stmt->bindValue('dateescritura', $dateescritura);
+            $result = $stmt->executeQuery();
+            $data = $result->fetchAllAssociative();
+            return $data;
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Error al verificar el consecutivo: ' . $e->getMessage(), 0, $e);
+        }
+    }
+    
     private function mapToRemissionConsecutives(array $data): RemissionConsecutives
     {
         return new RemissionConsecutives(

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Permission;
 
-use App\Domain\Permission\Permission;
 use Psr\Http\Message\ResponseInterface as Response;
 use OpenApi\Annotations as OA;
 /**

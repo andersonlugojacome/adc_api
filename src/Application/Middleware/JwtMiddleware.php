@@ -40,7 +40,7 @@ class JwtMiddleware
 
 
         // Permitir el acceso sin token a las rutas de inicio de sesión y registro
-        if ($path === '/login' || $path === '/register' || $path === '/' || $path === '/docs' || $path === '/docs/swagger.json') {
+        if ($path === '/login' || $path === '/register' || $path === '/' || $path === '/docs' || $path === '/docs/swagger.json' || strpos($path, '/printed-stickers/codigocrypto/') === 0) {
             return $handler->handle($request);
         }
 
