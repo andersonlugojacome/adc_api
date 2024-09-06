@@ -23,7 +23,7 @@ class ObtenerFirmasRegistradasAction extends Action
         // Crear el servicio directamente en el constructor
         $wsdl = 'https://www.signo-cloud.co/signo/webService/wsdl.php?WSDL';
         $login = 'CS2rr1t4/8whkoDOrFk';
-        $password = '8whkoDOrFk$$1';
+        $password = '';
         // $wsdl = 'https://signo-bpm.avance.org.co/BPM/signo/webService/wsdl.php?WSDL';
         // $login = "pruebasbpm62/8whkoDOrFk"; // Este es de tipo codigonotarial/usuarioquecreasteWS
         // $password = "8whkoDOrFk$$4";
